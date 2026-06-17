@@ -32,8 +32,11 @@ This is the project-level cross-agent contract.
 
 ## Test commands
 
+- Verify (mandatory pre-commit): `npm run verify` (= `lint` + `build`)
 - Build/Typecheck: `npm run build`
+- Lint: `npm run lint`
 - Dev server: `npm run dev`
+- Playwright e2e: pending Plan 007
 
 ## Branch/deploy policy
 
@@ -43,16 +46,27 @@ This is the project-level cross-agent contract.
 
 ## Safety
 
-Do not touch secrets, environment files, production data, destructive operations, or production deploy logic without explicit approval.
+Do not touch secrets, environment files, production data, destructive operations, or production deploy logic without explicit approval. Sensitive surfaces are listed in `.claude/rules/security.md`; touching any requires Core-risk tier + approval.
+**Rule: Always check the code and run `npm run verify` before making a commit. Never commit unverified code.**
 
 ## Local harness
 
-Read project rules under `.claude/rules/` when relevant.
-Use `docs/harness/README.md` for project harness details.
-Log every Standard, Complex, Core-risk, Research-only, and Meta-harness task under `docs/ai-runs/`.
-Trivial tasks may be skipped only when they create no durable change and expose no workflow issue.
-Update `docs/ai-runs/harness-scores.md` after every five required logs and after any failed, rolled-back, security-sensitive, or high-friction run.
+- Read project rules under `.claude/rules/` when relevant (always read `task-routing.md` before classifying a task).
+- Use `docs/harness/README.md` for the full harness map, meta-harness loop, and enforcement table.
+- Log every Standard, Complex, Core-risk, Research-only, and Meta-harness task under `docs/ai-runs/` **using `docs/ai-runs/_TEMPLATE.md`**. Trivial tasks may be skipped only when they create no durable change and expose no workflow issue.
+- Create a sprint artifact under `docs/sprints/` for every Standard+ task (scaffold via `scripts/sprint-artifacts.ps1`).
+- Update `docs/ai-runs/harness-scores.md` after every five required logs and **immediately** after any run tagged `FAILED`, `ROLLED-BACK`, `SECURITY-SENSITIVE`, or `HIGH-FRICTION`.
+- After each scoring, append one proposal to `docs/ai-runs/harness-improvements.md` (the meta-harness loop).
 
-**Required Plugins & Skills:**
-Always proactively use **caveman** (to optimize token usage and communication), **context-mode** (for searching and processing large outputs safely), and **agentmemory** (to recall and preserve context across sessions) throughout your workflow.
+## Enforcement (real, not prompt-compliance)
+
+- **Sprint gate:** `scripts/sprint-gate.ps1` checks that `docs/sprints/<slug>.md` exists and contains `Result: PASS`. Wired into `.git/hooks/pre-push` by `scripts/install-hooks.ps1` (run once per clone). Blocks push on a failing/missing sprint.
+- **Run-log check:** `scripts/run-log-check.ps1` verifies a new entry appeared in `docs/ai-runs/` for Standard+ tasks. Run by the agent at task end.
+- **Verify gate:** `npm run verify` must pass before any commit that touches `src/`, `public/`, `server.js`, or `package.json`.
+
+## Required plugins & skills
+
+Always proactively use **caveman** (token compression), **context-mode** (search/processing of large outputs — keep raw bytes out of conversation), and **agentmemory** (cross-session recall) throughout the workflow.
+
+The default-relevant skill allowlist for this project lives in `docs/harness/README.md` ("Skills actually used by this project"). Load others only on explicit request.
 
