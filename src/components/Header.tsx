@@ -79,6 +79,13 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
 
           {/* Contact Actions */}
           <div className="hidden lg:flex items-center gap-6">
+            <div className="hidden xl:flex flex-col items-end justify-center text-[10px] text-slate-400 font-sans pr-5 border-r border-slate-800">
+              <span className="flex items-center gap-1.5 font-medium text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                Склад открыт
+              </span>
+              <span>Пн-Вс 08:00–18:00</span>
+            </div>
             <a 
               href="tel:+79493401011" 
               className="flex items-center gap-2 text-white font-semibold text-sm hover:opacity-80 transition-all"
@@ -165,6 +172,18 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
             {/* Bottom Contact card wrapper */}
             <div className="mt-auto space-y-6">
               
+              {/* Warehouse Status & Schedule */}
+              <div className="flex items-center justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-800/50">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                  </span>
+                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">Склад открыт</span>
+                </div>
+                <div className="text-xs text-slate-400 font-medium">Пн-Вс 08:00–18:00</div>
+              </div>
+
               {/* Phone display */}
               <div className="flex items-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-850">
                 <div className={`p-3 rounded-lg bg-slate-950 ${getThemeTextClass()} border border-slate-800`}>

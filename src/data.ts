@@ -17,7 +17,7 @@ export const PRODUCTS: Product[] = [
     priceEstimate: "от 450",
     unit: "мешок",
     description: "Премиальный сортовой уголь антрацит, расфасованный в плотные полипропиленовые мешки по 40 кг. Подходит для автоматических котлов и классических печей.",
-    image: "https://images.unsplash.com/photo-1523413651479-797eb2e23da0?q=80&w=600&auto=format&fit=crop"
+    image: "/images/products/anthracite-bags.webp"
   },
   {
     id: "coal-ton",
@@ -30,7 +30,7 @@ export const PRODUCTS: Product[] = [
     priceEstimate: "от 7,800",
     unit: "т",
     description: "Длиннопламенный тощий уголь в промышленных объёмах. Отлично держит температуру, характеризуется ровным горением без копоти и искр.",
-    image: "https://images.unsplash.com/photo-1588600878108-57c611a2776d?q=80&w=600&auto=format&fit=crop"
+    image: "/images/products/coal-ton.webp"
   },
   {
     id: "firewood-oak",
@@ -43,7 +43,7 @@ export const PRODUCTS: Product[] = [
     priceEstimate: "от 350",
     unit: "мешок",
     description: "Сухие колотые дрова премиальных сортов древесины. Долго горят, дают стойкий древесный жар, обладают минимальным выделением смол.",
-    image: "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?q=80&w=600&auto=format&fit=crop"
+    image: "/images/products/firewood-oak.webp"
   },
   {
     id: "sand-gravel",
@@ -55,7 +55,7 @@ export const PRODUCTS: Product[] = [
     priceEstimate: "от 1,200",
     unit: "т",
     description: "Чистый карьерный песок, гранитный щебень различных фракций и доменный кусковой шлак для строительных и планировочных работ.",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=600&auto=format&fit=crop"
+    image: "/images/products/sand-gravel.webp"
   }
 ];
 

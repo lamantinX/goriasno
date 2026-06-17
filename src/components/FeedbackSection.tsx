@@ -28,6 +28,9 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
   const [productType, setProductType] = useState("Антрацит АО / АМ / АС в мешках");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [agree, setAgree] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadMap, setLoadMap] = useState(false);
 
   const getThemeTextClass = () => {
     if (theme === "cool-slate") return "text-sky-450";
@@ -83,8 +86,33 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
       submittedAt: new Date().toLocaleTimeString() + ", " + new Date().toLocaleDateString()
     };
 
-    setError("");
-    onSubmitSuccess(payload);
+    setIsSubmitting(true);
+    fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: payload.name,
+        phone: payload.phone,
+        productName: payload.productName,
+        message: payload.message,
+        sourceForm: payload.sourceForm,
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setIsSubmitting(false);
+      if (data.success) {
+        setError("");
+        onSubmitSuccess(payload);
+      } else {
+        setError(data.error || "Ошибка при отправке");
+      }
+    })
+    .catch(err => {
+      setIsSubmitting(false);
+      setError("Ошибка соединения с сервером");
+      console.error(err);
+    });
   };
 
   return (
@@ -181,14 +209,27 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   />
                 </div>
 
+                {/* Checkbox FZ-152 */}
+                <label className="flex items-start gap-2 text-[10px] text-slate-500 cursor-pointer pt-2">
+                  <input 
+                    type="checkbox" 
+                    checked={agree} 
+                    onChange={(e) => setAgree(e.target.checked)} 
+                    required 
+                    className="mt-0.5 rounded border-slate-900 bg-slate-950 text-orange-500 shrink-0" 
+                  />
+                  <span>Я согласен на обработку персональных данных согласно <a href="/privacy.html" target="_blank" className="underline hover:text-white">Политике конфиденциальности</a></span>
+                </label>
+
                 {/* Submit button */}
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className={`w-full py-4 rounded-xl font-bold text-center tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 transform active:scale-98 font-display ${getThemeButtonClass()}`}
+                    disabled={!agree || isSubmitting}
+                    className={`w-full py-4 rounded-xl font-bold text-center tracking-wide flex items-center justify-center gap-2 transition-all duration-300 font-display ${(!agree || isSubmitting) ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'cursor-pointer transform active:scale-98 ' + getThemeButtonClass()}`}
                   >
                     <Send className="w-4 h-4" />
-                    <span>ОТПРАВИТЬ РАСЧЕТ</span>
+                    <span>{isSubmitting ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ РАСЧЕТ'}</span>
                   </button>
                 </div>
 
@@ -253,41 +294,53 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
             {/* High-Fidelity Mock map directional panel */}
             <div className="h-64 rounded-2xl overflow-hidden border border-slate-900 relative group shadow-xl">
               
-              {/* Backing Map placeholder using standard styling */}
-              <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800" 
-                  alt="Карта проезда к складу"
-                  className="w-full h-full object-cover grayscale opacity-30 contrast-125 select-none"
-                />
-              </div>
+              {loadMap ? (
+                <iframe 
+                  src="https://yandex.ru/map-widget/v1/?ll=37.80285%2C48.015884&z=16" 
+                  width="100%" 
+                  height="100%" 
+                  frameBorder="0" 
+                  className="rounded-2xl absolute inset-0 z-20"
+                ></iframe>
+              ) : (
+                <div onClick={() => setLoadMap(true)} className="cursor-pointer w-full h-full relative z-20">
+                  {/* Backing Map placeholder using standard styling */}
+                  <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">
+                    <img 
+                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800" 
+                      alt="Карта проезда к складу"
+                      className="w-full h-full object-cover grayscale opacity-30 contrast-125 select-none"
+                    />
+                  </div>
 
-              {/* Glowing vector line mockups */}
-              <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[1px] pointer-events-none" />
+                  {/* Glowing vector line mockups */}
+                  <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[1px] pointer-events-none" />
 
-              {/* Glowing Marker */}
-              <div className="absolute top-[48%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
-                <div className="relative">
-                  <div className={`absolute -inset-4 opacity-40 rounded-full blur-md animate-pulse ${theme === "cool-slate" ? "bg-sky-500" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-600"}`}></div>
-                  <div className={`relative p-2.5 rounded-full border border-slate-800 text-slate-950 shadow-lg ${theme === "cool-slate" ? "bg-sky-550" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-500"}`}>
-                    <Compass className="w-5 h-5 animate-spin-slow" />
+                  {/* Glowing Marker */}
+                  <div className="absolute top-[48%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center group-hover:scale-105 transition-transform">
+                    <div className="relative">
+                      <div className={`absolute -inset-4 opacity-40 rounded-full blur-md animate-pulse ${theme === "cool-slate" ? "bg-sky-500" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-600"}`}></div>
+                      <div className={`relative p-2.5 rounded-full border border-slate-800 text-slate-950 shadow-lg ${theme === "cool-slate" ? "bg-sky-550" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-500"}`}>
+                        <Compass className="w-5 h-5 animate-spin-slow" />
+                      </div>
+                    </div>
+                    <div className="bg-[#121216]/95 border border-slate-800 rounded px-2.5 py-1 text-[10px] font-bold text-white mt-2 shadow-xl whitespace-nowrap font-sans uppercase tracking-wider">
+                      ПОКАЗАТЬ ИНТЕРАКТИВНУЮ КАРТУ
+                    </div>
+                  </div>
+
+                  {/* Direction Indicator Footer bar */}
+                  <div className="absolute bottom-4 left-4 right-4 bg-[#121216]/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-slate-855/80 flex items-center justify-between z-10 font-sans">
+                    <div>
+                      <h4 className="text-[10px] uppercase font-bold text-slate-400">Маршрут проезда</h4>
+                      <p className="text-[11px] text-white font-medium mt-0.5">ул. Промышленная, 14, въезд со светофора</p>
+                    </div>
+                    <button type="button" className={`p-1.5 rounded-lg ${getThemeBadgeClass()} text-xs font-semibold shrink-0 cursor-pointer`}>
+                      <Compass className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-                <div className="bg-[#121216]/95 border border-slate-800 rounded px-2.5 py-1 text-[10px] font-bold text-white mt-2 shadow-xl whitespace-nowrap font-sans uppercase tracking-wider">
-                  СКЛАД #ГОРИЯСНО# (База ОПС)
-                </div>
-              </div>
-
-              {/* Direction Indicator Footer bar */}
-              <div className="absolute bottom-4 left-4 right-4 bg-[#121216]/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-slate-855/80 flex items-center justify-between z-10 font-sans">
-                <div>
-                  <h4 className="text-[10px] uppercase font-bold text-slate-400">Маршрут проезда</h4>
-                  <p className="text-[11px] text-white font-medium mt-0.5">ул. Промышленная, 14, въезд со светофора</p>
-                </div>
-                <button className={`p-1.5 rounded-lg ${getThemeBadgeClass()} text-xs font-semibold shrink-0 cursor-pointer`}>
-                  <Compass className="w-4 h-4" />
-                </button>
-              </div>
+              )}
 
             </div>
 

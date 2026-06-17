@@ -36,6 +36,8 @@ export default function Modal({
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [agree, setAgree] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -43,6 +45,7 @@ export default function Modal({
       setPhone("+7 ");
       setMessage("");
       setError("");
+      setAgree(false);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -86,7 +89,38 @@ export default function Modal({
       submittedAt: new Date().toLocaleTimeString() + ", " + new Date().toLocaleDateString(),
     };
 
-    onSubmitSuccess(submission);
+    let apiMessage = submission.message;
+    if (submission.calculatorDetails) {
+      apiMessage += `\n\nДетали калькулятора:\nОбъем: ${submission.calculatorDetails.qty} ${submission.calculatorDetails.unit}\nЗона: ${submission.calculatorDetails.deliveryArea}\nДистанция: ${submission.calculatorDetails.distanceKm} км\nСумма: ${submission.calculatorDetails.estimatedCost}`;
+    }
+
+    setIsSubmitting(true);
+    fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: submission.name,
+        phone: submission.phone,
+        productName: submission.productName,
+        message: apiMessage,
+        sourceForm: submission.sourceForm,
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setIsSubmitting(false);
+      if (data.success) {
+        setError("");
+        onSubmitSuccess(submission);
+      } else {
+        setError(data.error || "Ошибка при отправке");
+      }
+    })
+    .catch(err => {
+      setIsSubmitting(false);
+      setError("Ошибка соединения с сервером");
+      console.error(err);
+    });
   };
 
   // Color mappings based on design review theme settings
@@ -240,18 +274,35 @@ export default function Modal({
             </div>
           )}
 
+          {/* Checkbox FZ-152 */}
+          <label className="flex items-start gap-2 text-[10px] text-slate-500 cursor-pointer pt-2 pb-2">
+            <input 
+              type="checkbox" 
+              checked={agree} 
+              onChange={(e) => setAgree(e.target.checked)} 
+              required 
+              className="mt-0.5 rounded border-slate-800 bg-slate-900 text-orange-500 shrink-0" 
+            />
+            <span>Я согласен на обработку персональных данных согласно <a href="/privacy.html" target="_blank" className="underline hover:text-white">Политике конфиденциальности</a></span>
+          </label>
+
           {/* Submit Button */}
           <div className="pt-2">
             <button
               type="submit"
-              className={`w-full py-4 rounded-xl font-bold text-sm tracking-wide shadow-lg cursor-pointer transform active:scale-98 transition-all flex items-center justify-center gap-2 font-display ${getThemeAccentClass()}`}
+              disabled={!agree || isSubmitting}
+              className={`w-full py-4 rounded-xl font-bold text-sm tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 font-display ${(!agree || isSubmitting) ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'cursor-pointer transform active:scale-98 ' + getThemeAccentClass()}`}
             >
               <span>
-                {formType === "callback" && "Заказать звонок"}
-                {formType === "order" && "Отправить заказ на расчёт"}
-                {formType === "calculator" && "Оформить заказ доставки"}
+                {isSubmitting ? "Отправка..." : (
+                  <>
+                    {formType === "callback" && "Заказать звонок"}
+                    {formType === "order" && "Отправить заказ на расчёт"}
+                    {formType === "calculator" && "Оформить заказ доставки"}
+                  </>
+                )}
               </span>
-              <ArrowRight className="w-4 h-4" />
+              {!isSubmitting && <ArrowRight className="w-4 h-4" />}
             </button>
           </div>
         </form>
@@ -260,7 +311,7 @@ export default function Modal({
         <div className="mt-5 pt-4 border-t border-slate-850 text-center">
           <p className="text-[10px] text-slate-500 leading-normal font-sans">
             Нажимая кнопку, вы подтверждаете согласие с{" "}
-            <a href="#privacy" className="underline hover:text-slate-300 transition-colors">
+            <a href="/privacy.html" target="_blank" className="underline hover:text-slate-300 transition-colors">
               политикой конфиденциальности сайта
             </a>{" "}
             и договором оферты.
