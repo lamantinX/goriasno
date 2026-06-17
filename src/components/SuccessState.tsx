@@ -234,8 +234,10 @@ export default function SuccessState({ submission, onBack, theme }: SuccessState
             <div className="h-[230px] rounded-3xl overflow-hidden border border-slate-900 relative">
               <div className="absolute inset-0 bg-slate-950 flex items-center justify-center">
                 <img 
-                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600" 
-                  alt="Donetsk Map Direction"
+                  src="/images/map-placeholder.svg" 
+                  alt="Схема проезда к складу ГориЯсно"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover grayscale opacity-30 contrast-125 select-none"
                 />
               </div>

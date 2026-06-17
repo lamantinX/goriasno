@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Схема проезда к складу">
+  <rect width="800" height="600" fill="#0d0d10"/>
+  <g stroke="#1f2937" stroke-width="2" opacity="0.6">
+    <path d="M0 120 H800 M0 300 H800 M0 480 H800 M120 0 V600 M320 0 V600 M520 0 V600 M680 0 V600"/>
+  </g>
+  <g stroke="#374151" stroke-width="6" opacity="0.5" fill="none">
+    <path d="M40 540 Q200 460 320 360 T620 180 L760 80"/>
+  </g>
+  <g>
+    <circle cx="620" cy="180" r="14" fill="#f97316" opacity="0.25"/>
+    <circle cx="620" cy="180" r="7" fill="#f97316"/>
+    <path d="M620 187 l0 28" stroke="#f97316" stroke-width="3"/>
+  </g>
+</svg>
