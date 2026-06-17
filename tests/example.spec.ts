@@ -9,7 +9,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
 
   test('Отображение шапки и заголовка', async ({ page }) => {
     // Проверяем наличие логотипа бренда
-    const brandLogo = page.locator('a:has-text("ГориЯсно")');
+    const brandLogo = page.locator('a:has-text("ГориЯсно")').first();
     await expect(brandLogo).toBeVisible();
 
     // Проверяем наличие главного H1 заголовка
@@ -67,7 +67,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     await orderButton.click();
 
     // Проверяем, что модальное окно открылось
-    const modal = page.locator('h3:has-text("Быстрый заказ товара")');
+    const modal = page.locator('span:has-text("Быстрый заказ товара")');
     await expect(modal).toBeVisible();
 
     // Закрываем окно кликом на крестик
