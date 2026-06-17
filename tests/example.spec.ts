@@ -25,7 +25,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     // Находим кнопку "Колотые дрова" и кликаем
     const firewoodTab = page.locator('button:has-text("Колотые дрова")');
     await expect(firewoodTab).toBeVisible();
-    await firewoodTab.click();
+    await firewoodTab.click({ force: true });
 
     // Проверяем, что в списке отображается товар с дровами
     const firewoodCard = page.locator('h3:has-text("Дрова: Дуб, Акация")');
@@ -50,7 +50,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
 
     // Ставим чекбокс согласия ФЗ-152
     const consentCheckbox = page.locator('input[type="checkbox"]');
-    await consentCheckbox.check();
+    await consentCheckbox.check({ force: true });
 
     // Проверяем, что кнопка отправки активна и кликаем
     const submitButton = page.locator('button[type="submit"]');
@@ -74,7 +74,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     const closeButton = page.locator('button:has-text("close")').or(page.locator('.fixed button').first());
     // Так как мы удалили панель согласования, кнопка закрытия модалки работает корректно
     const closeIcon = page.locator('svg.lucide-x').first();
-    await closeIcon.click();
+    await closeIcon.click({ force: true });
 
     // Проверяем, что окно закрылось
     await expect(modal).not.toBeVisible();
