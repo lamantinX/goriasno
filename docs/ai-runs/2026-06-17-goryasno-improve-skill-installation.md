@@ -1,0 +1,21 @@
+# Goryasno Improve Skill Installation
+
+- Date: 2026-06-17
+- Project: Goryasno Website
+- Agent/tool: Antigravity
+- Model: Gemini 3.5 Flash
+- Task: Install the `improve` skill (https://github.com/shadcn/improve) locally in the workspace for all agents (including Antigravity) and globally in the Gemini agent configuration directories, then validate its availability.
+- Task class: Standard
+- Risk tier: Low
+- Plan used: Yes (user instruction)
+- User approval: Explicit request
+- Files inspected: `C:\dev\goriasno\.agents\skills`, `C:\dev\goriasno\.claude\skills\improve`, `C:\Users\zelen\.gemini\config\plugins\shadcn-improve`, `C:\Users\zelen\.gemini\config\skills`
+- Files changed: 
+  - Installed `improve` locally using `npx skills add shadcn/improve --all` to `.agents/skills/improve` and `.claude/skills/improve` (updating `skills-lock.json` in the workspace).
+  - Wrote root `plugin.json` to `C:\Users\zelen\.gemini\config\plugins\shadcn-improve` for correct auto-detection.
+  - Copied `improve` skill files globally to `C:\Users\zelen\.gemini\config\skills\improve`.
+- Checks run: `npx skills list` to verify `improve` registration, directory listings to confirm skill files copy.
+- Result: The `improve` skill is now installed locally for the project's agents, registered in `skills-lock.json`, and set up globally in the agent config folders so it is natively available.
+- Failed checks: None.
+- Remaining risks: None.
+- Where the run log was recorded: `docs/ai-runs/2026-06-17-goryasno-improve-skill-installation.md`.
