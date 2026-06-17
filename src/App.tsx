@@ -46,9 +46,9 @@ export default function App() {
 
   // Modal visibility states
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalFormType, setModalFormType] = useState<"callback" | "order" | "calculator">("callback");
+  const [modalFormType, setModalFormType] = useState<"callback" | "order">("callback");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [calcDetails, setCalcDetails] = useState<any | null>(null);
+
 
 
 
@@ -93,18 +93,11 @@ export default function App() {
   // Catalog Call-to-action ordering trigger
   const handleSelectProductForOrder = (product: Product) => {
     setSelectedProduct(product);
-    setCalcDetails(null);
     setModalFormType("order");
     setIsModalOpen(true);
   };
 
-  // Calculator ordering trigger
-  const handleSelectCalculatorForOrder = (details: any) => {
-    setSelectedProduct(null);
-    setCalcDetails(details);
-    setModalFormType("calculator");
-    setIsModalOpen(true);
-  };
+
 
   // Colors context helper based on config.theme
   const getThemeClass = () => {
@@ -147,7 +140,6 @@ export default function App() {
               <Header 
                 onOpenCallback={() => {
                   setSelectedProduct(null);
-                  setCalcDetails(null);
                   setModalFormType("callback");
                   setIsModalOpen(true);
                 }} 
@@ -241,7 +233,7 @@ export default function App() {
         onClose={() => setIsModalOpen(false)}
         formType={modalFormType}
         selectedProduct={selectedProduct}
-        calculatorDetails={calcDetails}
+
         onSubmitSuccess={handleFormSubmissionSuccess}
         theme={config.theme}
       />
