@@ -82,11 +82,6 @@ export default function Modal({
       submittedAt: new Date().toLocaleTimeString() + ", " + new Date().toLocaleDateString(),
     };
 
-    let apiMessage = submission.message;
-    if (submission.calculatorDetails) {
-      apiMessage += `\n\nДетали калькулятора:\nОбъем: ${submission.calculatorDetails.qty} ${submission.calculatorDetails.unit}\nЗона: ${submission.calculatorDetails.deliveryArea}\nДистанция: ${submission.calculatorDetails.distanceKm} км\nСумма: ${submission.calculatorDetails.estimatedCost}`;
-    }
-
     setIsSubmitting(true);
     fetch('/api/leads', {
       method: 'POST',
@@ -95,7 +90,7 @@ export default function Modal({
         name: submission.name,
         phone: submission.phone,
         productName: submission.productName,
-        message: apiMessage,
+        message: submission.message,
         sourceForm: submission.sourceForm,
       })
     })
