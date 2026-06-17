@@ -297,9 +297,10 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
               {loadMap ? (
                 <iframe 
                   src="https://yandex.ru/map-widget/v1/?ll=37.80285%2C48.015884&z=16" 
+                  title="Интерактивная карта проезда к складу ГориЯсно на ул. Углегорская, 1"
+                  loading="lazy"
                   width="100%" 
                   height="100%" 
-                  frameBorder="0" 
                   className="rounded-2xl absolute inset-0 z-20"
                 ></iframe>
               ) : (
@@ -307,8 +308,10 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   {/* Backing Map placeholder using standard styling */}
                   <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">
                     <img 
-                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800" 
+                      src="/images/map-placeholder.svg" 
                       alt="Карта проезда к складу"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover grayscale opacity-30 contrast-125 select-none"
                     />
                   </div>
