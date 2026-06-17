@@ -1,0 +1,273 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from "react";
+import { User, Phone, X, ArrowRight, ShoppingCart, Truck } from "lucide-react";
+import { Product, FeedbackSubmission } from "../types";
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  formType: "callback" | "order" | "calculator";
+  selectedProduct?: Product | null;
+  calculatorDetails?: {
+    qty: number;
+    unit: string;
+    deliveryArea: string;
+    distanceKm: number;
+    estimatedCost: string;
+  } | null;
+  onSubmitSuccess: (submission: FeedbackSubmission) => void;
+  theme: "slate-fire" | "cool-slate" | "cozy-wood";
+}
+
+export default function Modal({
+  isOpen,
+  onClose,
+  formType,
+  selectedProduct,
+  calculatorDetails,
+  onSubmitSuccess,
+  theme,
+}: ModalProps) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      setName("");
+      setPhone("+7 ");
+      setMessage("");
+      setError("");
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  // Simple formatter for +7 phone number mask
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
+    // ensure it starts with +7 or +7 
+    if (!input.startsWith("+7")) {
+      input = "+7 " + input.replace(/^\+?7?\s*/, "");
+    }
+    setPhone(input);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError("Пожалуйста, введите ваше имя");
+      return;
+    }
+    if (phone.trim().length < 10 || phone === "+7 ") {
+      setError("Пожалуйста, введите корректный номер телефона");
+      return;
+    }
+
+    const submission: FeedbackSubmission = {
+      id: "sub-" + Math.random().toString(36).substr(2, 9),
+      name,
+      phone,
+      message: message || (formType === "callback" ? "Запрос обратного звонка" : `Запрос по форме ${formType}`),
+      sourceForm: formType === "callback" ? "callback" : formType === "calculator" ? "calculator" : "catalog_order",
+      productName: selectedProduct?.name,
+      calculatorDetails: calculatorDetails || undefined,
+      submittedAt: new Date().toLocaleTimeString() + ", " + new Date().toLocaleDateString(),
+    };
+
+    onSubmitSuccess(submission);
+  };
+
+  // Color mappings based on design review theme settings
+  const getThemeAccentClass = () => {
+    if (theme === "cool-slate") return "bg-sky-500 hover:bg-sky-400 text-slate-950 focus:ring-sky-500/50";
+    if (theme === "cozy-wood") return "bg-amber-500 hover:bg-amber-400 text-slate-950 focus:ring-amber-500/50";
+    return "bg-orange-500 hover:bg-orange-400 text-slate-950 focus:ring-orange-500/50"; // default
+  };
+
+  const getThemeTextClass = () => {
+    if (theme === "cool-slate") return "text-sky-400";
+    if (theme === "cozy-wood") return "text-amber-500";
+    return "text-orange-500";
+  };
+
+  const getThemeBorderClass = () => {
+    if (theme === "cool-slate") return "focus:border-sky-500 focus:ring-sky-500/30";
+    if (theme === "cozy-wood") return "focus:border-amber-500 focus:ring-amber-500/30";
+    return "focus:border-orange-500 focus:ring-orange-500/30";
+  };
+
+  return (
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div 
+        onClick={onClose}
+        className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300"
+      />
+
+      {/* Modal Container */}
+      <div className="bg-[#16161a] border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden relative shadow-2xl z-10 p-6 md:p-8 transform transition-transform duration-300 scale-100 font-sans">
+        
+        {/* Close Button */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-900 transition-all cursor-pointer"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Modal Header */}
+        <div className="mb-6">
+          {formType === "callback" && (
+            <>
+              <h3 className="text-xl md:text-2xl font-bold font-display text-white mb-2">Заказать звонок</h3>
+              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                Оставьте ваши контакты, и наш менеджер свяжется с вами в течение 15 минут для уточнения деталей и точного расчёта веса.
+              </p>
+            </>
+          )}
+
+          {formType === "order" && selectedProduct && (
+            <>
+              <div className="flex items-center gap-2 mb-2">
+                <ShoppingCart className={`w-5 h-5 ${getThemeTextClass()}`} />
+                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 font-sans">Быстрый заказ товара</span>
+              </div>
+              <h3 className="text-xl font-bold font-display text-white mb-1">{selectedProduct.name}</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Вы оформляете предварительный расчёт заказа на: <strong className={getThemeTextClass()}>{selectedProduct.name}</strong> ({selectedProduct.priceEstimate} ₽ / {selectedProduct.unit}).
+              </p>
+            </>
+          )}
+
+          {formType === "calculator" && calculatorDetails && (
+            <>
+              <div className="flex items-center gap-2 mb-2">
+                <Truck className={`w-5 h-5 ${getThemeTextClass()}`} />
+                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 font-sans">Оформить расчёт доставки</span>
+              </div>
+              <h3 className="text-xl font-bold font-display text-white mb-2">Заявка на расчёт</h3>
+              <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 text-xs mb-1 space-y-1 text-slate-300">
+                <div className="flex justify-between">
+                  <span>Объем:</span>
+                  <strong className="text-white">{calculatorDetails.qty} {calculatorDetails.unit}</strong>
+                </div>
+                <div className="flex justify-between">
+                  <span>Зона назначения:</span>
+                  <strong className="text-white truncate max-w-44">{calculatorDetails.deliveryArea}</strong>
+                </div>
+                <div className="flex justify-between border-t border-slate-800 pt-1 mt-1 font-bold">
+                  <span className={getThemeTextClass()}>Предварительно:</span>
+                  <span className="text-white">{calculatorDetails.estimatedCost}</span>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Error Alert */}
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-2.5 rounded-lg text-xs mb-4 font-medium font-sans">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {/* Form Body */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          
+          {/* Name input */}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
+              Ваше имя
+            </label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                <User className="w-4 h-4" />
+              </span>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Иван Иванов"
+                className={`w-full bg-[#0f0f12] text-sm text-white rounded-lg pl-10 pr-4 py-3 border border-slate-800 outline-none transition-all ${getThemeBorderClass()}`}
+              />
+            </div>
+          </div>
+
+          {/* Phone input */}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
+              Номер телефона
+            </label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                <Phone className="w-4 h-4" />
+              </span>
+              <input
+                type="tel"
+                value={phone}
+                onChange={handlePhoneChange}
+                placeholder="+7 (949) 340-10-11"
+                className={`w-full bg-[#0f0f12] text-sm text-white rounded-lg pl-10 pr-4 py-3 border border-slate-800 outline-none transition-all ${getThemeBorderClass()}`}
+              />
+            </div>
+          </div>
+
+          {/* Comment (only shown for standard order or if they want to add text) */}
+          {(formType === "order" || formType === "callback") && (
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
+                Дополнительные пожелания (Необязательно)
+              </label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Укажите объём, желаемое время звонка или детали въезда машины..."
+                rows={3}
+                className={`w-full bg-[#0f0f12] text-xs text-white rounded-lg p-3.5 border border-slate-800 outline-none transition-all resize-none ${getThemeBorderClass()}`}
+              />
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="pt-2">
+            <button
+              type="submit"
+              className={`w-full py-4 rounded-xl font-bold text-sm tracking-wide shadow-lg cursor-pointer transform active:scale-98 transition-all flex items-center justify-center gap-2 font-display ${getThemeAccentClass()}`}
+            >
+              <span>
+                {formType === "callback" && "Заказать звонок"}
+                {formType === "order" && "Отправить заказ на расчёт"}
+                {formType === "calculator" && "Оформить заказ доставки"}
+              </span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </form>
+
+        {/* Form Footer Terms */}
+        <div className="mt-5 pt-4 border-t border-slate-850 text-center">
+          <p className="text-[10px] text-slate-500 leading-normal font-sans">
+            Нажимая кнопку, вы подтверждаете согласие с{" "}
+            <a href="#privacy" className="underline hover:text-slate-300 transition-colors">
+              политикой конфиденциальности сайта
+            </a>{" "}
+            и договором оферты.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+}

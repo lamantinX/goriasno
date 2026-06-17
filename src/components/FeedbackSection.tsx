@@ -1,0 +1,301 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState } from "react";
+import { 
+  Building, 
+  MapPin, 
+  Clock, 
+  PhoneCall, 
+  Send, 
+  MessageSquare, 
+  Compass, 
+  CheckCheck,
+  AlertCircle 
+} from "lucide-react";
+import { FeedbackSubmission } from "../types";
+
+interface FeedbackSectionProps {
+  onSubmitSuccess: (submission: FeedbackSubmission) => void;
+  theme: "slate-fire" | "cool-slate" | "cozy-wood";
+}
+
+export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSectionProps) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("+7 ");
+  const [productType, setProductType] = useState("Антрацит АО / АМ / АС в мешках");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  const getThemeTextClass = () => {
+    if (theme === "cool-slate") return "text-sky-450";
+    if (theme === "cozy-wood") return "text-amber-500";
+    return "text-orange-500";
+  };
+
+  const getThemeButtonClass = () => {
+    if (theme === "cool-slate") return "bg-sky-500 hover:bg-sky-450 hover:shadow-sky-550/15 text-slate-950";
+    if (theme === "cozy-wood") return "bg-amber-500 hover:bg-amber-400 hover:shadow-amber-500/15 text-slate-950";
+    return "bg-orange-550 hover:bg-orange-500 hover:shadow-orange-550/15 text-slate-950"; // default
+  };
+
+  const getThemeBorderClass = () => {
+    if (theme === "cool-slate") return "focus:border-sky-500 focus:ring-sky-500/20 text-sky-400";
+    if (theme === "cozy-wood") return "focus:border-amber-500 focus:ring-amber-500/20 text-amber-500";
+    return "focus:border-orange-550 focus:ring-orange-550/20 text-orange-500";
+  };
+
+  const getThemeBadgeClass = () => {
+    if (theme === "cool-slate") return "bg-sky-500 text-slate-950 hover:bg-sky-400";
+    if (theme === "cozy-wood") return "bg-amber-500 text-slate-950 hover:bg-amber-400";
+    return "bg-orange-500 text-slate-950 hover:bg-orange-400";
+  };
+
+  // Safe phone mask formatter
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
+    if (!input.startsWith("+7")) {
+      input = "+7 " + input.replace(/^\+?7?\s*/, "");
+    }
+    setPhone(input);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError("Пожалуйста, заполните ваше имя");
+      return;
+    }
+    if (phone.trim().length < 10 || phone === "+7 ") {
+      setError("Некорректный формат телефона");
+      return;
+    }
+
+    const payload: FeedbackSubmission = {
+      id: "sub-main-" + Math.random().toString(36).substr(2, 9),
+      name,
+      phone,
+      productName: productType,
+      message,
+      sourceForm: "main_footer",
+      submittedAt: new Date().toLocaleTimeString() + ", " + new Date().toLocaleDateString()
+    };
+
+    setError("");
+    onSubmitSuccess(payload);
+  };
+
+  return (
+    <section id="contacts" className="py-20 bg-[#0c0c0e] border-t border-slate-900 overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
+        
+        {/* Main Grid split */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* Left Column: Direct inquiry Form panel */}
+          <div className="lg:col-span-6 space-y-6">
+            
+            <div className="bg-[#121215]/80 p-6 md:p-8 rounded-2xl border border-slate-900/60 shadow-2xl relative">
+              <div className="absolute top-0 right-10 w-24 h-24 bg-orange-600/5 blur-2xl rounded-full"></div>
+              
+              <h3 className="text-xl md:text-2xl font-black font-display text-white mb-2">
+                Оставить заявку
+              </h3>
+              <p className="text-slate-450 text-xs leading-relaxed font-sans mb-6">
+                Заполните форму для расчёта стоимости. Менеджер свяжется с вами, чтобы подтвердить марку угля или габариты дров, а также рассчитать условия доставки на ваш адрес.
+              </p>
+
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-3 rounded-lg flex items-center gap-2 mb-4">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleFormSubmit} className="space-y-4 font-sans text-xs">
+                
+                {/* Two inputs side-by-side on desktop */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  
+                  {/* Name field */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-sans">
+                      Ваше имя
+                    </label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Иван"
+                      className={`w-full bg-[#0a0a0c] border border-slate-900 rounded-lg p-3 text-sm text-white outline-none transition-all ${getThemeBorderClass()}`}
+                    />
+                  </div>
+
+                  {/* Phone field */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-sans">
+                      Телефон
+                    </label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={handlePhoneChange}
+                      placeholder="+7 (___) ___-__-__"
+                      className={`w-full bg-[#0a0a0c] border border-slate-900 rounded-lg p-3 text-sm text-white outline-none transition-all ${getThemeBorderClass()}`}
+                    />
+                  </div>
+
+                </div>
+
+                {/* Dropdown product selector choice */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-sans">
+                    Что вас интересует?
+                  </label>
+                  <select
+                    value={productType}
+                    onChange={(e) => setProductType(e.target.value)}
+                    className="w-full bg-[#0a0a0c] border border-slate-900 rounded-lg p-3 text-xs text-white outline-none cursor-pointer focus:border-slate-800"
+                  >
+                    <option>Антрацит АО / АМ / АС в мешках</option>
+                    <option>Уголь Марка Т (Тощий) навалом</option>
+                    <option>Дрова: Дуб, Акация (колотые)</option>
+                    <option>Песок, Шлак, Щебень строительный</option>
+                    <option>Другой объем / Нужен индивидуальный расчет</option>
+                  </select>
+                </div>
+
+                {/* Message comment area */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-sans">
+                    Сообщение (Необязательно)
+                  </label>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Укажите объем, адрес или особые пожелания к доставке..."
+                    rows={4}
+                    className={`w-full bg-[#0a0a0c] border border-slate-900 rounded-lg p-3.5 text-xs text-white outline-none transition-all resize-none ${getThemeBorderClass()}`}
+                  />
+                </div>
+
+                {/* Submit button */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className={`w-full py-4 rounded-xl font-bold text-center tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 transform active:scale-98 font-display ${getThemeButtonClass()}`}
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>ОТПРАВИТЬ РАСЧЕТ</span>
+                  </button>
+                </div>
+
+              </form>
+
+            </div>
+
+          </div>
+
+          {/* Right Column: Address, Contacts & Mock Map direction card */}
+          <div className="lg:col-span-6 space-y-6">
+            
+            <div className="bg-[#121215]/40 p-6 rounded-2xl border border-slate-900 text-sans">
+              <h3 className="font-extrabold text-[#ffffff] font-display text-lg tracking-tight mb-5">
+                Наши контакты в Донецке
+              </h3>
+
+              <div className="space-y-4 text-xs tracking-wide">
+                
+                {/* Physical address option */}
+                <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-lg bg-slate-900 border border-slate-855 ${getThemeTextClass()}`}>
+                    <Building className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Главный склад ОПС</span>
+                    <p className="text-white font-medium text-xs font-sans mt-0.5">
+                      Донецк, ул. Промышленная, 14 (ориентир – оптовая база ОПС)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Daily hours */}
+                <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-lg bg-slate-900 border border-slate-855 ${getThemeTextClass()}`}>
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Режим работы</span>
+                    <p className="text-white font-medium text-xs font-sans mt-0.5">
+                      Ежедневно с 08:00 до 18:00 без перерывов
+                    </p>
+                  </div>
+                </div>
+
+                {/* Telephone speed line */}
+                <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-lg bg-slate-900 border border-slate-855 ${getThemeTextClass()}`}>
+                    <PhoneCall className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Отдел продаж</span>
+                    <a href="tel:+79493401011" className="text-white font-black text-sm font-display mt-0.5 block hover:opacity-80 transition-opacity">
+                      +7 (949) 340-10-11
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* High-Fidelity Mock map directional panel */}
+            <div className="h-64 rounded-2xl overflow-hidden border border-slate-900 relative group shadow-xl">
+              
+              {/* Backing Map placeholder using standard styling */}
+              <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">
+                <img 
+                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800" 
+                  alt="Карта проезда к складу"
+                  className="w-full h-full object-cover grayscale opacity-30 contrast-125 select-none"
+                />
+              </div>
+
+              {/* Glowing vector line mockups */}
+              <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[1px] pointer-events-none" />
+
+              {/* Glowing Marker */}
+              <div className="absolute top-[48%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
+                <div className="relative">
+                  <div className={`absolute -inset-4 opacity-40 rounded-full blur-md animate-pulse ${theme === "cool-slate" ? "bg-sky-500" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-600"}`}></div>
+                  <div className={`relative p-2.5 rounded-full border border-slate-800 text-slate-950 shadow-lg ${theme === "cool-slate" ? "bg-sky-550" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-500"}`}>
+                    <Compass className="w-5 h-5 animate-spin-slow" />
+                  </div>
+                </div>
+                <div className="bg-[#121216]/95 border border-slate-800 rounded px-2.5 py-1 text-[10px] font-bold text-white mt-2 shadow-xl whitespace-nowrap font-sans uppercase tracking-wider">
+                  СКЛАД #ГОРИЯСНО# (База ОПС)
+                </div>
+              </div>
+
+              {/* Direction Indicator Footer bar */}
+              <div className="absolute bottom-4 left-4 right-4 bg-[#121216]/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-slate-855/80 flex items-center justify-between z-10 font-sans">
+                <div>
+                  <h4 className="text-[10px] uppercase font-bold text-slate-400">Маршрут проезда</h4>
+                  <p className="text-[11px] text-white font-medium mt-0.5">ул. Промышленная, 14, въезд со светофора</p>
+                </div>
+                <button className={`p-1.5 rounded-lg ${getThemeBadgeClass()} text-xs font-semibold shrink-0 cursor-pointer`}>
+                  <Compass className="w-4 h-4" />
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
