@@ -473,6 +473,20 @@
   --font-display: "Rubik", sans-serif;
   --font-sans: "Outfit", sans-serif;
   --font-serif: "Playfair Display", serif;
+
+  /* Custom slate grays — graphite/anthracite per docs/stitch_design_spec.md */
+  --color-slate-350: #94a3b8;   /* between slate-300 (#cbd5e1) and slate-400 (#94a3b8) */
+  --color-slate-405: #8b98a8;   /* slightly lighter than slate-400 body text */
+  --color-slate-450: #7b8794;   /* between slate-400 (#94a3b8) and slate-500 (#64748b) */
+  --color-slate-850: #1a1a1e;   /* card graphite per design spec */
+  --color-slate-855: #15151a;   /* slightly darker than slate-850, matches existing card bg literals */
+
+  /* Fiery accent shades (slate-fire theme; currently fixed to cozy-wood but kept for completeness) */
+  --color-orange-550: #f97316;  /* design spec accent orange */
+
+  /* Cool-slate theme accent shades (currently dead, kept for completeness) */
+  --color-sky-450: #38bdf8;     /* between sky-400 (#38bdf8) and sky-500 (#0ea5e9) */
+  --color-sky-550: #0284c7;     /* between sky-500 (#0ea5e9) and sky-600 (#0284c7) */
 }
 
 /* Custom glow and scrollbar utilities */
