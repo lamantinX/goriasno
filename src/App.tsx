@@ -296,13 +296,12 @@ export default function App() {
               />
             </div>
 
-            {/* Hero promo block with Calculator */}
+            {/* Hero promo block with Warehouse Status & Live Stock */}
             <div className={getGuidesClass()}>
               {config.showGuides && (
-                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Промо баннер + Расчет доставки</div>
+                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Промо баннер + Состояние склада</div>
               )}
               <Hero 
-                onOpenCalcModal={handleSelectCalculatorForOrder}
                 theme={config.theme}
               />
             </div>

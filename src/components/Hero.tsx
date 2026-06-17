@@ -4,70 +4,14 @@
  */
 
 import React, { useState } from "react";
-import { Calculator as CalcIcon, ShoppingBag, MapPin, CheckCircle, Flame, ArrowDownCircle, Info, Calendar } from "lucide-react";
+import { ShoppingBag, MapPin, CheckCircle, Flame, ArrowDownCircle, Info, Calendar, Scale, ShieldCheck, Truck } from "lucide-react";
 import { DELIVERY_AREAS } from "../data";
-import { MockupConfig, FeedbackSubmission } from "../types";
 
 interface HeroProps {
-  onOpenCalcModal: (details: {
-    qty: number;
-    unit: string;
-    deliveryArea: string;
-    distanceKm: number;
-    estimatedCost: string;
-    productName: string;
-  }) => void;
   theme: "slate-fire" | "cool-slate" | "cozy-wood";
 }
 
-export default function Hero({ onOpenCalcModal, theme }: HeroProps) {
-  // Calculator States
-  const [selectedProductType, setSelectedProductType] = useState<"anthracite" | "coal-ton" | "wood" | "gravel">("anthracite");
-  const [quantity, setQuantity] = useState(10); // 10 units
-  const [selectedAreaId, setSelectedAreaId] = useState(DELIVERY_AREAS[0].id);
-
-  // Constants mapping product types to metadata
-  const productMeta = {
-    anthracite: {
-      name: "Антрацит АО / АМ / АС в мешках",
-      unitPrice: 450,
-      unitLabel: "меш.",
-      minQty: 5,
-      maxQty: 100,
-      step: 5,
-      descr: "мешки по 40 кг"
-    },
-    "coal-ton": {
-      name: "Тощий уголь (Марка Т) навалом",
-      unitPrice: 7800,
-      unitLabel: "т",
-      minQty: 1,
-      maxQty: 25,
-      step: 1,
-      descr: "отборный навалом"
-    },
-    wood: {
-      name: "Дрова твердых пород в мешках",
-      unitPrice: 350,
-      unitLabel: "меш.",
-      minQty: 10,
-      maxQty: 150,
-      step: 5,
-      descr: "дуб / акация / граб"
-    },
-    gravel: {
-      name: "Песок / Щебень для стройки",
-      unitPrice: 1200,
-      unitLabel: "т",
-      minQty: 1,
-      maxQty: 20,
-      step: 1,
-      descr: "чистый сыпучий"
-    }
-  };
-
-  const activeMeta = productMeta[selectedProductType];
-
+export default function Hero({ theme }: HeroProps) {
   const getThemeTextClass = () => {
     if (theme === "cool-slate") return "text-sky-400";
     if (theme === "cozy-wood") return "text-amber-500";
@@ -98,29 +42,15 @@ export default function Hero({ onOpenCalcModal, theme }: HeroProps) {
     return "bg-orange-500 shadow-orange-500/50";
   };
 
-  // Perform Calculation (React state calculations are fast and responsive!)
-  const selectedAreaObj = DELIVERY_AREAS.find(a => a.id === selectedAreaId) || DELIVERY_AREAS[0];
-  const itemTotalCost = activeMeta.unitPrice * quantity;
-  const deliveryCost = selectedAreaObj.baseRate;
-  const grandTotalCost = itemTotalCost + deliveryCost;
-
-  const costFormatter = (num: number) => {
-    return num.toLocaleString("ru-RU") + " ₽";
-  };
-
-  const handleOpenModal = () => {
-    onOpenCalcModal({
-      qty: quantity,
-      unit: activeMeta.unitLabel,
-      deliveryArea: selectedAreaObj.name,
-      distanceKm: selectedProductType === "coal-ton" ? 15 : 10,
-      estimatedCost: costFormatter(grandTotalCost),
-      productName: activeMeta.name
-    });
-  };
-
   const handleScrollToCatalog = () => {
     const element = document.getElementById("catalog");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleScrollToContacts = () => {
+    const element = document.getElementById("feedback-section");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
@@ -166,7 +96,7 @@ export default function Hero({ onOpenCalcModal, theme }: HeroProps) {
             {/* Micro-Features Row */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 pt-3">
               <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-900 flex items-center gap-2">
-                <CheckCircle className={`w-4- h-4 ${getThemeTextClass()} shrink-0`} />
+                <CheckCircle className={`w-4 h-4 ${getThemeTextClass()} shrink-0`} />
                 <span className="text-[11px] font-sans text-slate-350 font-medium">Точный вес силами Органов Контроля</span>
               </div>
               <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-900 flex items-center gap-2">
@@ -189,14 +119,10 @@ export default function Hero({ onOpenCalcModal, theme }: HeroProps) {
               </button>
               
               <button
-                onClick={() => {
-                  const el = document.getElementById("calculator-card");
-                  if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-                }}
+                onClick={handleScrollToContacts}
                 className="px-8 py-4 rounded-xl border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2 font-display"
               >
-                <span>Быстрый калькулятор</span>
-                <CalcIcon className="w-4 h-4 text-slate-500" />
+                <span>Связаться с менеджером</span>
               </button>
             </div>
 
@@ -208,8 +134,8 @@ export default function Hero({ onOpenCalcModal, theme }: HeroProps) {
 
           </div>
 
-          {/* Right Column: High-Fidelity Delivery & Materials Calculator Card */}
-          <div id="calculator-card" className="lg:col-span-6 relative">
+          {/* Right Column: Warehouse Capacity, Direct Scaler & Fleet visual card */}
+          <div className="lg:col-span-6 relative">
             
             {/* Glow backing */}
             <div className={`absolute -inset-1.5 opacity-10 rounded-2xl blur-xl ${theme === "cool-slate" ? "bg-sky-500" : theme === "cozy-wood" ? "bg-amber-500" : "bg-orange-500"}`}></div>
@@ -218,153 +144,103 @@ export default function Hero({ onOpenCalcModal, theme }: HeroProps) {
             <div className="bg-[#121215] border border-slate-900 rounded-2xl shadow-2xl relative p-5 md:p-6 space-y-4 font-sans text-left">
               
               {/* Card Header title */}
-              <div className="flex items-center justify-between border-b border-slate-900 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-900/80 pb-3">
                 <div className="flex items-center gap-2">
-                  <CalcIcon className={`w-5 h-5 ${getThemeTextClass()}`} />
-                  <span className="font-bold text-xs tracking-wider text-slate-400 uppercase">Мгновенный Калькулятор</span>
+                  <ShieldCheck className={`w-5 h-5 ${getThemeTextClass()}`} />
+                  <span className="font-bold text-xs tracking-wider text-slate-450 uppercase">Гарантия качества и точного веса</span>
                 </div>
-                <span className="text-[10px] text-slate-500 font-sans tracking-wide">Версия 1.4 (Интерактивная)</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20">
+                  Работаем открыто
+                </span>
               </div>
 
-              {/* Step 1: Select fuel category type */}
-              <div className="space-y-1.5">
+              {/* Decorative Trust Feature: 60-Ton Scales */}
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-900 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="p-2 rounded-lg bg-slate-900 text-slate-300">
+                    <Scale className={`w-5 h-5 ${getThemeTextClass()}`} />
+                  </span>
+                  <div className="space-y-0.5">
+                    <h4 className="font-bold text-xs text-white uppercase tracking-wider font-display">
+                      Сертифицированные 60-Тонные автовесы
+                    </h4>
+                    <p className="text-[11px] text-slate-400 leading-relaxed font-sans">
+                      Взвешивание машин производится дважды — пустой транспорт и после погрузки угля/дров. Погрешность исключена. Вы платите только за чистый вес угля.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Decorative Trust Feature: Live Donetsk Stock Metrics */}
+              <div className="space-y-2">
                 <label className="text-[10px] font-bold tracking-wider text-slate-500 uppercase block font-sans">
-                  Выберите вид топлива / материала
+                  Наличие на Донецком складе (Обновлено сегодня)
                 </label>
+                
                 <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => { setSelectedProductType("anthracite"); setQuantity(20); }}
-                    className={`px-3 py-2.5 rounded-lg border text-xs font-bold text-center transition-all ${
-                      selectedProductType === "anthracite"
-                        ? `bg-[#18181f] border-slate-800 ${getThemeTextClass()}`
-                        : "bg-[#0c0c0e] border-slate-900 text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    Антрацит (мешки)
-                  </button>
-                  <button
-                    onClick={() => { setSelectedProductType("coal-ton"); setQuantity(3); }}
-                    className={`px-3 py-2.5 rounded-lg border text-xs font-bold text-center transition-all ${
-                      selectedProductType === "coal-ton"
-                        ? `bg-[#18181f] border-slate-800 ${getThemeTextClass()}`
-                        : "bg-[#0c0c0e] border-slate-900 text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    Тощий уголь (т)
-                  </button>
-                  <button
-                    onClick={() => { setSelectedProductType("wood"); setQuantity(30); }}
-                    className={`px-3 py-2.5 rounded-lg border text-xs font-bold text-center transition-all ${
-                      selectedProductType === "wood"
-                        ? `bg-[#18181f] border-slate-800 ${getThemeTextClass()}`
-                        : "bg-[#0c0c0e] border-slate-900 text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    Дрова колотые (меш)
-                  </button>
-                  <button
-                    onClick={() => { setSelectedProductType("gravel"); setQuantity(5); }}
-                    className={`px-3 py-2.5 rounded-lg border text-xs font-bold text-center transition-all ${
-                      selectedProductType === "gravel"
-                        ? `bg-[#18181f] border-slate-800 ${getThemeTextClass()}`
-                        : "bg-[#0c0c0e] border-slate-900 text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    Песок / Щебень (т)
-                  </button>
+                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-450">Антрацит (кулак, орех):</span>
+                      <span className="text-green-400 font-bold">140+ т</span>
+                    </div>
+                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-green-500 rounded-full" style={{ width: "85%" }}></div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-450">Дрова колотые (смесь пород):</span>
+                      <span className="text-green-400 font-bold">95 скл.м</span>
+                    </div>
+                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-amber-500 rounded-full" style={{ width: "70%" }}></div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-450">ДСП/Дрова хвойные:</span>
+                      <span className="text-green-400 font-bold">45 скл.м</span>
+                    </div>
+                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-amber-400 rounded-full" style={{ width: "45%" }}></div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-450">Гравий / Отсев / Песок:</span>
+                      <span className="text-green-400 font-bold">220+ т</span>
+                    </div>
+                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-sky-500 rounded-full" style={{ width: "90%" }}></div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Step 2: Slider or volume quantity input */}
-              <div className="space-y-1.5 p-3 rounded-lg bg-slate-950 border border-slate-900">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-400 font-medium">Требуемый объем ({activeMeta.descr}):</span>
-                  <span className="font-extrabold text-white text-sm">
-                    {quantity} <span className={getThemeTextClass()}>{activeMeta.unitLabel}</span>
+              {/* Decorative Trust Feature: Transport Delivery Area */}
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-900 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="p-2 rounded-lg bg-slate-900 text-slate-300">
+                    <Truck className={`w-5 h-5 ${getThemeTextClass()}`} />
                   </span>
-                </div>
-                
-                {/* Horizontal slider control */}
-                <input
-                  type="range"
-                  min={activeMeta.minQty}
-                  max={activeMeta.maxQty}
-                  step={activeMeta.step}
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className={`w-full accent-orange-500 h-1 bg-slate-800 rounded-lg cursor-pointer ${
-                    theme === "cool-slate" ? "accent-sky-500" : theme === "cozy-wood" ? "accent-amber-500" : "accent-orange-500"
-                  }`}
-                />
-                
-                {/* Increment / Decrement Quick buttons */}
-                <div className="flex justify-between text-[10px] text-slate-500">
-                  <span>Мин: {activeMeta.minQty} {activeMeta.unitLabel}</span>
-                  <span>Лимит в одну ходку машины: {activeMeta.maxQty} {activeMeta.unitLabel}</span>
-                </div>
-              </div>
-
-              {/* Step 3: Location dispatch selectors */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold tracking-wider text-slate-500 uppercase block font-sans">
-                  Район назначения / Доставки угля
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                    <MapPin className="w-4 h-4" />
-                  </span>
-                  <select
-                    value={selectedAreaId}
-                    onChange={(e) => setSelectedAreaId(e.target.value)}
-                    className="w-full bg-[#0a0a0c] border border-slate-900 rounded-lg text-xs text-white pl-10 pr-4 py-3 outline-none focus:border-slate-800 transition-all font-sans cursor-pointer"
-                  >
-                    {DELIVERY_AREAS.map(area => (
-                      <option key={area.id} value={area.id}>
-                        {area.name} (доставка от {area.baseRate} ₽)
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Receipt Summary view details */}
-              <div className="bg-[#181820]/40 p-3.5 rounded-xl border border-slate-900 text-xs space-y-2">
-                <p className="font-bold text-[10px] uppercase text-slate-500 tracking-wider">Предварительная спецификация</p>
-                
-                <div className="space-y-1.5 text-slate-300">
-                  <div className="flex justify-between">
-                    <span>Стоимость материалов со склада:</span>
-                    <span className="font-semibold text-white">{costFormatter(itemTotalCost)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Транспортные расходы машины ГАЗель/ЗИЛ:</span>
-                    <span className="font-semibold text-white">{costFormatter(deliveryCost)}</span>
-                  </div>
-                  
-                  {/* Total separator line */}
-                  <div className="border-t border-slate-900/80 pt-2 flex justify-between items-center">
-                    <span className="font-bold text-slate-400">ИТОГО К ОПЛАТЕ ПРИ ПОЛУЧЕНИИ:</span>
-                    <span className={`text-base font-extrabold text-white`}>
-                      {costFormatter(grandTotalCost)}
-                    </span>
+                  <div className="space-y-0.5">
+                    <h4 className="font-bold text-xs text-white uppercase tracking-wider font-display">
+                      Собственная автобаза (Газели, ЗИЛы, Камазы)
+                    </h4>
+                    <p className="text-[11px] text-slate-400 leading-relaxed font-sans">
+                      Оперативная доставка по Донецку, Макеевке, Ясиноватой, Харцызску и всей территории ДНР. Выгрузка самосвалом бесплатная.
+                    </p>
                   </div>
                 </div>
-              </div>
-
-              {/* CTA Calculation button */}
-              <div className="pt-2">
-                <button
-                  onClick={handleOpenModal}
-                  className={`w-full py-4 rounded-xl font-bold text-sm tracking-wide uppercase shadow-lg transition-all duration-300 transform active:scale-95 cursor-pointer font-display ${getThemeButtonClass()}`}
-                >
-                  Оформить доставку с точным весом
-                </button>
               </div>
 
               {/* Informative terms link */}
-              <div className="text-[10px] text-slate-500 text-center flex items-center justify-center gap-1">
+              <div className="text-[10px] text-slate-500 text-center flex items-center justify-center gap-1.5 pt-1">
                 <Info className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                <span>Оплата производится по факту взвешивания и выгрузки на ваших весах.</span>
+                <span>Вы можете приехать лично на склад, выбрать конкретную кучу угля и проконтролировать его погрузку.</span>
               </div>
 
             </div>
