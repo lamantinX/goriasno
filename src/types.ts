@@ -28,15 +28,9 @@ export interface FeedbackSubmission {
   phone: string;
   productType?: string;
   message?: string;
-  sourceForm: "callback" | "catalog_order" | "main_footer" | "calculator";
+  sourceForm: "callback" | "catalog_order" | "main_footer";
   productName?: string;
-  calculatorDetails?: {
-    qty: number;
-    unit: string;
-    deliveryArea: string;
-    distanceKm: number;
-    estimatedCost: string;
-  };
+
   submittedAt: string;
 }
 

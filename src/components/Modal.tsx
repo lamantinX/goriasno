@@ -4,21 +4,15 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { User, Phone, X, ArrowRight, ShoppingCart, Truck } from "lucide-react";
+import { User, Phone, X, ArrowRight, ShoppingCart } from "lucide-react";
 import { Product, FeedbackSubmission } from "../types";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  formType: "callback" | "order" | "calculator";
+  formType: "callback" | "order";
   selectedProduct?: Product | null;
-  calculatorDetails?: {
-    qty: number;
-    unit: string;
-    deliveryArea: string;
-    distanceKm: number;
-    estimatedCost: string;
-  } | null;
+
   onSubmitSuccess: (submission: FeedbackSubmission) => void;
   theme: "slate-fire" | "cool-slate" | "cozy-wood";
 }
@@ -28,7 +22,6 @@ export default function Modal({
   onClose,
   formType,
   selectedProduct,
-  calculatorDetails,
   onSubmitSuccess,
   theme,
 }: ModalProps) {
@@ -83,9 +76,9 @@ export default function Modal({
       name,
       phone,
       message: message || (formType === "callback" ? "Запрос обратного звонка" : `Запрос по форме ${formType}`),
-      sourceForm: formType === "callback" ? "callback" : formType === "calculator" ? "calculator" : "catalog_order",
+      sourceForm: formType === "callback" ? "callback" : "catalog_order",
       productName: selectedProduct?.name,
-      calculatorDetails: calculatorDetails || undefined,
+
       submittedAt: new Date().toLocaleTimeString() + ", " + new Date().toLocaleDateString(),
     };
 
@@ -185,29 +178,7 @@ export default function Modal({
             </>
           )}
 
-          {formType === "calculator" && calculatorDetails && (
-            <>
-              <div className="flex items-center gap-2 mb-2">
-                <Truck className={`w-5 h-5 ${getThemeTextClass()}`} />
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 font-sans">Оформить расчёт доставки</span>
-              </div>
-              <h3 className="text-xl font-bold font-display text-white mb-2">Заявка на расчёт</h3>
-              <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 text-xs mb-1 space-y-1 text-slate-300">
-                <div className="flex justify-between">
-                  <span>Объем:</span>
-                  <strong className="text-white">{calculatorDetails.qty} {calculatorDetails.unit}</strong>
-                </div>
-                <div className="flex justify-between">
-                  <span>Зона назначения:</span>
-                  <strong className="text-white truncate max-w-44">{calculatorDetails.deliveryArea}</strong>
-                </div>
-                <div className="flex justify-between border-t border-slate-800 pt-1 mt-1 font-bold">
-                  <span className={getThemeTextClass()}>Предварительно:</span>
-                  <span className="text-white">{calculatorDetails.estimatedCost}</span>
-                </div>
-              </div>
-            </>
-          )}
+
         </div>
 
         {/* Error Alert */}
@@ -298,7 +269,6 @@ export default function Modal({
                   <>
                     {formType === "callback" && "Заказать звонок"}
                     {formType === "order" && "Отправить заказ на расчёт"}
-                    {formType === "calculator" && "Оформить заказ доставки"}
                   </>
                 )}
               </span>
