@@ -117,23 +117,7 @@ export default function SuccessState({ submission, onBack, theme }: SuccessState
                     )}
                   </div>
 
-                  {/* Calculator shipping summary metrics */}
-                  {submission.calculatorDetails && (
-                    <div className="mt-3 pt-2 border-t border-slate-900 space-y-1.5 text-[11px] text-slate-400">
-                      <div className="flex justify-between">
-                        <span>Планируемый вес / объем:</span>
-                        <strong className="text-white">{submission.calculatorDetails.qty} {submission.calculatorDetails.unit}</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Муниципальная зона доставки:</span>
-                        <strong className="text-white">{submission.calculatorDetails.deliveryArea}</strong>
-                      </div>
-                      <div className="flex justify-between text-xs font-bold text-white border-t border-slate-900/50 pt-1.5 mt-1">
-                        <span>ИТОГО К ОПЛАТЕ ПРИ ПОЛУЧЕНИИ:</span>
-                        <span className={getThemeTextClass()}>{submission.calculatorDetails.estimatedCost}</span>
-                      </div>
-                    </div>
-                  )}
+
                 </div>
               )}
 
