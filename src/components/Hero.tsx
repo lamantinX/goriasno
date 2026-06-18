@@ -49,7 +49,7 @@ export default function Hero({ theme }: HeroProps) {
   };
 
   const handleScrollToContacts = () => {
-    const element = document.getElementById("feedback-section");
+    const element = document.getElementById("contacts");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
