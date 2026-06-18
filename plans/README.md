@@ -27,7 +27,7 @@
 | 011 | [plans/011-service-worker-fix.md](plans/011-service-worker-fix.md) | P1 | M | 010 | DONE |
 | 012 | [plans/012-self-host-map-media-hygiene.md](plans/012-self-host-map-media-hygiene.md) | P2 | S | — | DONE |
 | 013 | [plans/013-small-correctness-fixes.md](plans/013-small-correctness-fixes.md) | P2 | S | — | TODO |
-| 014 | [plans/014-dead-code-cleanup.md](plans/014-dead-code-cleanup.md) | P2 | M | 012, 013 | TODO |
+| 014 | [plans/014-dead-code-cleanup.md](plans/014-dead-code-cleanup.md) | P2 | M | 012, 013 | DONE |
 | 015 | [plans/015-ai-studio-template-leftovers.md](plans/015-ai-studio-template-leftovers.md) | P2 | S | — | TODO |
 | 016 | [plans/016-security-headers.md](plans/016-security-headers.md) | P2 | S | 012 | TODO |
 | 017 | [plans/017-strict-typecheck-and-linter.md](plans/017-strict-typecheck-and-linter.md) | P3 | M | 014, 015 | TODO |

@@ -72,7 +72,7 @@ export default function Modal({
     }
 
     const submission: FeedbackSubmission = {
-      id: "sub-" + Math.random().toString(36).substr(2, 9),
+      id: "sub-" + Math.random().toString(36).slice(2, 11),
       name,
       phone,
       message: message || (formType === "callback" ? "Запрос обратного звонка" : `Запрос по форме ${formType}`),

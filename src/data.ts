@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Product, DesignNote } from "./types";
+import { Product } from "./types";
 
 export const PRODUCTS: Product[] = [
   {
@@ -113,27 +113,6 @@ export const PRODUCTS: Product[] = [
     unit: "услуга",
     description: "Вывоз строительного мусора и отходов после ремонта, демонтажа или строительства. Приедем, погрузим, вывезем — быстро, аккуратно, с грузчиками. Экономьте свои силы и время. Работаем по Донецку и пригороду.",
     image: "/images/products/debris-removal.jpg"
-  }
-];
-
-export const INITIAL_DESIGN_NOTES: DesignNote[] = [
-  {
-    id: "note-1",
-    author: "Заказчик (Дмитрий)",
-    text: "Отличный глубокий цвет фона, хорошо гармонирует с оранжевым пламенем! Сделайте, пожалуйста, кнопку звонка еще более акцентной на мобильных устройствах.",
-    xPercent: 82,
-    yPercent: 7,
-    timestamp: "17.06.2026, 12:15",
-    isResolved: false
-  },
-  {
-    id: "note-2",
-    author: "Арт-директор",
-    text: "Поля в форме обратной связи нарисованы идеально. Обязательно сделаем маску ввода для телефонов формата Донеччины +7 (949).",
-    xPercent: 28,
-    yPercent: 78,
-    timestamp: "17.06.2026, 12:18",
-    isResolved: false
   }
 ];
 

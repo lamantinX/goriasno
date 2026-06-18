@@ -77,7 +77,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
     }
 
     const payload: FeedbackSubmission = {
-      id: "sub-main-" + Math.random().toString(36).substr(2, 9),
+      id: "sub-main-" + Math.random().toString(36).slice(2, 11),
       name,
       phone,
       productName: productType,
