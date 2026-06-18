@@ -1,20 +1,42 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# ГориЯсно — сайт-каталог угольного склада (Донецк)
 
-# Run and deploy your AI Studio app
+Single-page React catalog for a coal / firewood / building-materials
+warehouse in Donetsk. Lead forms relay to a Telegram channel via a small
+Express backend. Optimized for slow RF 3G (self-hosted fonts, no external
+CDNs, offline-first Service Worker).
 
-This contains everything you need to run your app locally.
+## Stack
+React 19, Vite 6, TypeScript, Tailwind CSS v4 (via `@tailwindcss/vite`),
+Lucide React, Express (lead-relay backend), Playwright (E2E).
 
-View your app in AI Studio: https://ai.studio/apps/5ee54465-2eab-4f74-8305-220f4ff9f85d
+## Prerequisites
+Node.js (LTS).
 
-## Run Locally
+## Install
+`npm install`
 
-**Prerequisites:**  Node.js
+## Develop
+`npm run dev` — Vite dev server on http://localhost:3000.
+The backend runs separately: `node server.js` (port 3001). In dev, Vite
+proxies `/api/*` to `http://localhost:3001` (see `vite.config.ts`).
 
+## Environment (backend)
+Copy `.env.example` to `.env` and fill in:
+- `TELEGRAM_BOT_TOKEN` — bot token from @BotFather
+- `TELEGRAM_CHAT_ID` — target channel/chat id (bot must be a member)
+- `PORT` (optional, default 3001)
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Without these, `/api/leads` returns 500 "Server configuration error".
+
+## Build
+`npm run build` — outputs to `dist/`.
+
+## Test
+`npm test` — runs Playwright E2E (auto-starts the dev server).
+`npm run lint` — `tsc --noEmit` typecheck.
+
+## Deploy
+Production: `goryasno.ru` via Nginx serving `dist/` (`nginx.conf`).
+The Express backend (`server.js`) serves `dist/` + the `/api/leads` route
+when run in production.
+Staging: see `DEPLOY_NIP_IO.md` for the nip.io wildcard-DNS flow.
