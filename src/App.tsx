@@ -1,6 +1,6 @@
 /**
  * @license
- * SPDX-License-Identifier: Apache-2.5
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { useState, useEffect, useRef } from "react";
@@ -35,9 +35,7 @@ export default function App() {
   // Mockup configurations state
   const [config, setConfig] = useState<MockupConfig>({
     theme: "cozy-wood",
-    showGuides: false,
     mockupStage: "landing",
-    placedNotesEnabled: false,
   });
 
 
@@ -113,13 +111,6 @@ export default function App() {
     return "text-orange-500";
   };
 
-  // Guides bounding highlight helpers
-  const getGuidesClass = () => {
-    return config.showGuides 
-      ? "border border-dashed border-rose-500/50 bg-rose-500/[0.015] relative p-1 transition-all" 
-      : "transition-all";
-  };
-
   const latestSub = submissions.length > 0 ? submissions[submissions.length - 1] : null;
 
   return (
@@ -134,55 +125,40 @@ export default function App() {
         {config.mockupStage === "landing" ? (
           <>
             {/* Header section bound */}
-            <div className={getGuidesClass()}>
-              {config.showGuides && (
-                <div className="absolute top-1 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Шапка (NavBar) Container</div>
-              )}
-              <Header 
+            <div className="transition-all">
+              <Header
                 onOpenCallback={() => {
                   setSelectedProduct(null);
                   setModalFormType("callback");
                   setIsModalOpen(true);
-                }} 
+                }}
                 theme={config.theme}
               />
             </div>
 
             {/* Hero promo block with Warehouse Status & Live Stock */}
-            <div className={getGuidesClass()}>
-              {config.showGuides && (
-                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Промо баннер + Состояние склада</div>
-              )}
-              <Hero 
+            <div className="transition-all">
+              <Hero
                 theme={config.theme}
               />
             </div>
 
             {/* Catalog tab section */}
-            <div className={getGuidesClass()}>
-              {config.showGuides && (
-                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Компонент: Сортируемый Каталог</div>
-              )}
-              <Catalog 
+            <div className="transition-all">
+              <Catalog
                 onSelectProduct={handleSelectProductForOrder}
                 theme={config.theme}
               />
             </div>
 
             {/* Steps explanations section */}
-            <div className={getGuidesClass()}>
-              {config.showGuides && (
-                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Информационный блок: Процесс</div>
-              )}
+            <div className="transition-all">
               <HowWeWork theme={config.theme} />
             </div>
 
             {/* Main bottom feedback with interactive map */}
-            <div className={getGuidesClass()}>
-              {config.showGuides && (
-                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Подвал обратной связи + Экспресс Карта</div>
-              )}
-              <FeedbackSection 
+            <div className="transition-all">
+              <FeedbackSection
                 onSubmitSuccess={handleFormSubmissionSuccess}
                 theme={config.theme}
               />
@@ -190,11 +166,8 @@ export default function App() {
           </>
         ) : (
           /* Transaction check success state screen */
-          <div className={getGuidesClass()}>
-            {config.showGuides && (
-              <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] px-1 rounded z-20 font-bold uppercase tracking-wider">Компонент: Нажатие формы (Успех)</div>
-            )}
-            <SuccessState 
+          <div className="transition-all">
+            <SuccessState
               submission={latestSub}
               onBack={() => setConfig(prev => ({ ...prev, mockupStage: "landing" }))}
               theme={config.theme}
