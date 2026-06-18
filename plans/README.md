@@ -13,6 +13,7 @@
 | 005 | [plans/005-seo-and-verification.md](file:///C:/dev/goriasno/plans/005-seo-and-verification.md) | P2 | M | 004 | DONE |
 | 006 | [plans/006-clean-up-and-bug-fixes.md](file:///C:/dev/goriasno/plans/006-clean-up-and-bug-fixes.md) | P1 | M | 005 | DONE |
 | 007 | [plans/007-e2e-testing-and-dx.md](file:///C:/dev/goriasno/plans/007-e2e-testing-and-dx.md) | P1 | M | 006 | TODO |
+| 015 | [plans/015-ai-studio-template-leftovers.md](plans/015-ai-studio-template-leftovers.md) | P2 | S | — | DONE |
 
 *Значения статуса: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED` | `REJECTED`*
 
@@ -21,7 +22,7 @@
 ## Архитектура и стек проекта
 
 Сайт спроектирован как ультра-оптимизированное React-приложение:
-*   **Сек**: React 19, Vite 6, TypeScript, Tailwind CSS v4 (с плагином `@tailwindcss/vite`), Lucide React для иконок, Framer Motion (`motion`) для анимаций.
+*   **Стек**: React 19, Vite 6, TypeScript, Tailwind CSS v4 (с плагином `@tailwindcss/vite`), Lucide React для иконок. Анимации — CSS keyframes + утилиты Tailwind (`animate-*`).
 *   **Дизайн**: Идентичный согласованному макету (глубокий темный стиль "угольный" `#0a0a0c`, огненные желто-оранжевые акценты). Полная мобильная адаптивность.
 *   **Оптимизация производительности для РФ**:
     *   *Self-Hosted*: Все шрифты (WOFF2) и ресурсы хранятся локально (отказ от внешних CDNs).
