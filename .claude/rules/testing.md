@@ -13,6 +13,17 @@
 
 `npm run verify` = `npm run lint && npm run build` (i.e. `tsc --noEmit` + `vite build`). It is the **mandatory minimum** before any commit that touches `src/`, `public/`, `server.js`, or `package.json`.
 
+## Quiet wrapper for agent context hygiene
+
+`bash scripts/run-quiet.sh verify` runs the IDENTICAL `npm run verify` and
+propagates its exit code, but suppresses stdout/stderr on success — printing
+the full captured output only on failure. This keeps verify output out of the
+agent's conversation memory on green runs (see
+`.claude/rules/context-budget.md`). It does NOT disable, skip, or weaken any
+check (see Forbidden below); use the raw `npm run verify` when you need to
+read the output. The quiet wrapper satisfies the mandatory-verify-before-commit
+rule because it runs `npm run verify` internally.
+
 ## Criterion-level evidence
 
 Each acceptance criterion in the sprint Contract must be **verifiable by a concrete command or Playwright step**. "Works correctly" is not a criterion. Record in the sprint Evidence section:
