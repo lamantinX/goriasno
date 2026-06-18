@@ -14,7 +14,7 @@ Local-Overrides: 7-dimension scoring rubric (see `.claude/rules/meta-harness.md`
 | `.claude/rules/` | Operational rules: `task-routing.md`, `meta-harness.md`, `testing.md`, `context-budget.md`, `security.md`. |
 | `.claude/skills/` | Workflows. Harness-critical: `sprint-contract`, `run-logging`, `feature-implementation`, `bug-investigation`, `release-check`, `improve`. |
 | `.claude/agents/` | Specialist agents: `hostile-evaluator`, `security-reviewer`, `test-writer`. |
-| `scripts/` | Enforcement + scaffolding: `sprint-gate.sh`, `sprint-artifacts.sh`, `run-log-check.sh`, `install-hooks.sh`. |
+| `scripts/` | Enforcement + scaffolding: `sprint-gate.sh`, `sprint-artifacts.sh`, `run-log-check.sh`, `install-hooks.sh`, `run-quiet.sh` (silent-on-pass output wrapper). |
 | `docs/ai-runs/` | Run logs (one per Standard+ task) + `_TEMPLATE.md` + `harness-scores.md` + `harness-improvements.md`. |
 | `docs/sprints/` | Sprint artifacts (`<slug>.md`, `<slug>.trivial`) + `_TEMPLATE.md`. |
 | `plans/` | Approved execution plans (`<NNN>-<slug>.md`) from `improve plan`. |
@@ -68,7 +68,10 @@ The `.claude/skills/` directory holds only skills relevant to goriasno (a React/
 - `npm run dev` — dev server on port 3000.
 - `npm run build` — production build.
 - `npm run lint` — `tsc --noEmit`.
-- Playwright e2e — pending Plan 007.
+- `npm run test` — Playwright e2e.
+- Quiet variants (agent context hygiene, see `.claude/rules/context-budget.md`):
+  `bash scripts/run-quiet.sh <verify|test|lint|build>` — runs the same npm
+  command but prints output only on failure; add `--loud` to debug.
 
 ## Branch / deploy policy
 

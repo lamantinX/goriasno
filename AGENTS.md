@@ -36,7 +36,25 @@ This is the project-level cross-agent contract.
 - Build/Typecheck: `npm run build`
 - Lint: `npm run lint`
 - Dev server: `npm run dev`
-- Playwright e2e: pending Plan 007
+- Playwright e2e: `npm run test`
+
+### Quiet variants (agent context hygiene)
+
+Running `npm run verify` / `npm run test` via a shell tool loads every line
+of output into the agent's conversation memory for the whole session (see
+`.claude/rules/context-budget.md`). For routine verification gates prefer
+the quiet wrapper — it runs the IDENTICAL npm command but prints output only
+on failure and propagates the real exit code:
+
+- `bash scripts/run-quiet.sh verify` — verify gate, silent on pass.
+- `bash scripts/run-quiet.sh test`    — Playwright e2e, silent on pass.
+- `bash scripts/run-quiet.sh lint`    — `tsc --noEmit`, silent on pass.
+- `bash scripts/run-quiet.sh build`   — `vite build`, silent on pass.
+- Add `--loud` to any of the above to print all output (use when debugging a failure).
+
+The quiet wrapper does NOT disable or skip any check; it satisfies the
+mandatory-verify-before-commit rule because it runs `npm run verify`
+internally. Use the raw `npm run ...` form when you need to read the output.
 
 ## Branch/deploy policy
 
