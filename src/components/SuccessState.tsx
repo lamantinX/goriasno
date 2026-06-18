@@ -201,7 +201,7 @@ export default function SuccessState({ submission, onBack, theme }: SuccessState
                   </div>
                   <div>
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">Адрес погрузки</span>
-                    <p className="text-white font-medium mt-0.5">Донецк, ул. Промышленная, 14 (база ОПС)</p>
+                    <p className="text-white font-medium mt-0.5">Донецк, ул. Углегорская, 1</p>
                   </div>
                 </div>
 

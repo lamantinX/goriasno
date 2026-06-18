@@ -36,4 +36,4 @@ Skipping a check is allowed only with: the check name, the reason, and the remai
 
 ## Pending
 
-Plan 007 (`plans/007-e2e-testing-and-dx.md`) adds a Playwright e2e harness. Until it lands, UI verification is a manual browser check via `/browse` or `npm run preview` + screenshot, recorded in Evidence.
+Plan 007 (`plans/007-e2e-testing-and-dx.md`) adds a Playwright e2e harness. Until it lands, UI verification is a manual browser check via `npm run preview` + screenshot, recorded in Evidence.

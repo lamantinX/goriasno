@@ -34,20 +34,7 @@ export interface FeedbackSubmission {
   submittedAt: string;
 }
 
-export interface DesignNote {
-  id: string;
-  author: string;
-  text: string;
-  xPercent: number; // For placing pins relative to page coordinates
-  yPercent: number;
-  sectionId?: string;
-  timestamp: string;
-  isResolved: boolean;
-}
-
 export interface MockupConfig {
   theme: "slate-fire" | "cool-slate" | "cozy-wood";
-  showGuides: boolean; // Highlights margins and grid layouts to show spacing
   mockupStage: "landing" | "success";
-  placedNotesEnabled: boolean; // Enables client pinning feedback comments
 }

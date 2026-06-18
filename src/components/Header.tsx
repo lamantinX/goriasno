@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { Phone, Menu, X, Flame, Send, MessageCircle } from "lucide-react";
+import { Phone, Menu, X, Flame, Send } from "lucide-react";
 
 interface HeaderProps {
   onOpenCallback: () => void;
@@ -92,6 +92,13 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
             >
               <Phone className={`w-4 h-4 ${getThemeTextClass()}`} />
               <span className="font-display">+7 (949) 340-10-11</span>
+            </a>
+            <a 
+              href="tel:+79889946896" 
+              className="hidden xl:flex items-center gap-2 text-slate-300 font-semibold text-sm hover:opacity-80 transition-all"
+            >
+              <Phone className="w-4 h-4 text-slate-400" />
+              <span className="font-display text-xs">МТС</span>
             </a>
             
             <button
@@ -190,8 +197,10 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Отдел продаж Донецк</p>
+                  <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Отдел продаж (Феникс)</p>
                   <a href="tel:+79493401011" className="text-lg font-black text-white font-display">+7 (949) 340-10-11</a>
+                  <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-1.5">МТС</p>
+                  <a href="tel:+79889946896" className="text-lg font-black text-white font-display">+7 (988) 994-68-96</a>
                 </div>
               </div>
 
@@ -215,7 +224,7 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
               {/* Messengers */}
               <div className="grid grid-cols-2 gap-3 text-xs pt-1 font-sans">
                 <a 
-                  href="https://t.me/" 
+                  href="https://t.me/ugol_donbassa" 
                   target="_blank" 
                   rel="noreferrer" 
                   className="flex items-center justify-center gap-2 py-3 bg-slate-900 hover:bg-slate-850 border border-slate-850 rounded-lg text-slate-300 transition-colors"
@@ -224,13 +233,11 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
                   <span>Telegram</span>
                 </a>
                 <a 
-                  href="https://wa.me/" 
-                  target="_blank" 
-                  rel="noreferrer" 
+                  href="tel:+79889946896" 
                   className="flex items-center justify-center gap-2 py-3 bg-slate-900 hover:bg-slate-850 border border-slate-850 rounded-lg text-slate-300 transition-colors"
                 >
-                  <MessageCircle className="w-3.5 h-3.5 text-green-400" />
-                  <span>WhatsApp</span>
+                  <Phone className="w-3.5 h-3.5 text-orange-400" />
+                  <span>МТС</span>
                 </a>
               </div>
 
