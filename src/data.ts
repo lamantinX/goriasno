@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Product } from "./types";
+import type { Product } from "./types";
 
 export const PRODUCTS: Product[] = [
   {

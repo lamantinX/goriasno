@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { Flame, CheckCircle, ArrowRight, Grid, Scale, Layers } from "lucide-react";
+import { useState } from "react";
+import { Flame, ArrowRight, Grid, Scale, Layers } from "lucide-react";
 import { PRODUCTS } from "../data";
-import { Product } from "../types";
+import type { Product } from "../types";
 
 interface CatalogProps {
   onSelectProduct: (product: Product) => void;

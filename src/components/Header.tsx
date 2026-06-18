@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { Phone, Menu, X, Flame, Send } from "lucide-react";
+import { useState } from "react";
+import { Phone, Menu, X, Send } from "lucide-react";
 
 interface HeaderProps {
   onOpenCallback: () => void;
@@ -24,12 +24,6 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
     if (theme === "cool-slate") return "bg-sky-500 text-slate-950 hover:bg-sky-400 hover:shadow-sky-500/20";
     if (theme === "cozy-wood") return "bg-amber-500 text-slate-950 hover:bg-amber-400 hover:shadow-amber-500/20";
     return "bg-orange-500 text-slate-950 hover:bg-orange-400 hover:shadow-orange-500/20";
-  };
-
-  const getThemeBorderClass = () => {
-    if (theme === "cool-slate") return "border-sky-500/30";
-    if (theme === "cozy-wood") return "border-amber-500/30";
-    return "border-orange-500/30";
   };
 
   const scrollToSection = (id: string) => {
