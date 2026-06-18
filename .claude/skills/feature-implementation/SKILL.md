@@ -10,7 +10,7 @@ Build the smallest correct version of a feature.
 
 ## Steps
 1. **Understand User Outcome**: Define the user story and objective.
-2. **Inspect Relevant Files**: Find affected files in `web/` or `backend/`.
+2. **Inspect Relevant Files**: Find affected files in `src/` (e.g. `src/components/`) or `server.js`.
 3. **Identify Patterns**: Look for existing coding styles and implementation styles.
 4. **Minimal Plan**: Plan a localized change.
 5. **Implement Small Diff**: Focus on minimal changes to avoid side-effects.
