@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["src/**", "tests/**", "*.ts", "*.json"],
+    "maxSize": 500000
+  },
+  "formatter": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useButtonType": "off",
+        "useValidAnchor": "off",
+        "useSemanticElements": "off",
+        "noRedundantRoles": "off",
+        "noLabelWithoutControl": "off",
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noInvalidPositionAtImportRule": "off"
+      }
+    }
+  },
+  "css": {
+    "linter": {
+      "enabled": false
+    },
+    "parser": {
+      "cssModules": true
+    }
+  },
+  "javascript": {
+    "globals": ["Playwright"]
+  }
+}

@@ -3,19 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { 
-  Building, 
-  MapPin, 
-  Clock, 
-  PhoneCall, 
-  Send, 
-  MessageSquare, 
-  Compass, 
-  CheckCheck,
-  AlertCircle 
+import { useState } from "react";
+import {
+  Building,
+  Clock,
+  PhoneCall,
+  Send,
+  Compass,
+  AlertCircle
 } from "lucide-react";
-import { FeedbackSubmission } from "../types";
+import type { FeedbackSubmission } from "../types";
 
 interface FeedbackSectionProps {
   onSubmitSuccess: (submission: FeedbackSubmission) => void;
@@ -222,7 +219,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                     required 
                     className="mt-0.5 rounded border-slate-900 bg-slate-950 text-orange-500 shrink-0" 
                   />
-                  <span>Я согласен на обработку персональных данных согласно <a href="/privacy.html" target="_blank" className="underline hover:text-white">Политике конфиденциальности</a></span>
+                  <span>Я согласен на обработку персональных данных согласно <a href="/privacy.html" target="_blank" rel="noopener" className="underline hover:text-white">Политике конфиденциальности</a></span>
                 </label>
 
                 {/* Submit button */}

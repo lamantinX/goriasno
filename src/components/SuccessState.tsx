@@ -3,21 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { 
-  CheckCircle, 
-  BookOpen, 
-  Flame, 
-  MapPin, 
-  Clock, 
-  Phone, 
-  ArrowLeft, 
-  ChevronRight, 
+import { useState } from "react";
+import {
+  CheckCircle,
+  BookOpen,
+  Flame,
+  MapPin,
+  Clock,
+  Phone,
+  ArrowLeft,
   Sparkles,
-  Award,
   ChevronDown
 } from "lucide-react";
-import { FeedbackSubmission } from "../types";
+import type { FeedbackSubmission } from "../types";
 
 interface SuccessStateProps {
   submission?: FeedbackSubmission | null;
@@ -32,12 +30,6 @@ export default function SuccessState({ submission, onBack, theme }: SuccessState
     if (theme === "cool-slate") return "text-sky-400";
     if (theme === "cozy-wood") return "text-amber-500";
     return "text-orange-500";
-  };
-
-  const getThemeButtonClass = () => {
-    if (theme === "cool-slate") return "bg-sky-500 text-slate-950 hover:bg-sky-400 font-bold";
-    if (theme === "cozy-wood") return "bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold";
-    return "bg-orange-500 text-slate-950 hover:bg-orange-400 font-bold";
   };
 
   const getThemeBadgeClass = () => {

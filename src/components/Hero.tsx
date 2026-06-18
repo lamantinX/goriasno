@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { ShoppingBag, MapPin, CheckCircle, Flame, ArrowDownCircle, Info, Calendar, Scale, ShieldCheck, Truck } from "lucide-react";
+import { CheckCircle, ArrowDownCircle, Info, Scale, ShieldCheck, Truck } from "lucide-react";
 
 interface HeroProps {
   theme: "slate-fire" | "cool-slate" | "cozy-wood";
@@ -15,12 +14,6 @@ export default function Hero({ theme }: HeroProps) {
     if (theme === "cool-slate") return "text-sky-400";
     if (theme === "cozy-wood") return "text-amber-500";
     return "text-orange-500";
-  };
-
-  const getThemeBorderClass = () => {
-    if (theme === "cool-slate") return "border-sky-500/20";
-    if (theme === "cozy-wood") return "border-amber-500/20";
-    return "border-orange-500/20";
   };
 
   const getThemeButtonClass = () => {

@@ -3,24 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from "react";
-import { 
-  MessageSquare, 
-  Send, 
-  MapPin, 
-  HelpCircle, 
-  Layers, 
-  X, 
-  Home, 
-  CheckCircle,
-  FileText,
-  Sliders,
-  Sparkles,
-  Phone
-} from "lucide-react";
+import { useState, useEffect } from "react";
 
-import { Product, FeedbackSubmission, MockupConfig } from "./types";
-import { PRODUCTS } from "./data";
+import type { Product, FeedbackSubmission, MockupConfig } from "./types";
 
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -57,7 +42,7 @@ export default function App() {
     if (savedSubmissions) {
       try {
         setSubmissions(JSON.parse(savedSubmissions));
-      } catch (e) {
+      } catch {
         setSubmissions([]);
       }
     }

@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { User, Phone, X, ArrowRight, ShoppingCart } from "lucide-react";
-import { Product, FeedbackSubmission } from "../types";
+import type { Product, FeedbackSubmission } from "../types";
 
 interface ModalProps {
   isOpen: boolean;
@@ -249,7 +249,7 @@ export default function Modal({
               required 
               className="mt-0.5 rounded border-slate-800 bg-slate-900 text-orange-500 shrink-0" 
             />
-            <span>Я согласен на обработку персональных данных согласно <a href="/privacy.html" target="_blank" className="underline hover:text-white">Политике конфиденциальности</a></span>
+            <span>Я согласен на обработку персональных данных согласно <a href="/privacy.html" target="_blank" rel="noopener" className="underline hover:text-white">Политике конфиденциальности</a></span>
           </label>
 
           {/* Submit Button */}
@@ -276,7 +276,7 @@ export default function Modal({
         <div className="mt-5 pt-4 border-t border-slate-850 text-center">
           <p className="text-[10px] text-slate-500 leading-normal font-sans">
             Нажимая кнопку, вы подтверждаете согласие с{" "}
-            <a href="/privacy.html" target="_blank" className="underline hover:text-slate-300 transition-colors">
+            <a href="/privacy.html" target="_blank" rel="noopener" className="underline hover:text-slate-300 transition-colors">
               политикой конфиденциальности сайта
             </a>{" "}
             и договором оферты.

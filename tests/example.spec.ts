@@ -71,7 +71,6 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     await expect(modal).toBeVisible();
 
     // Закрываем окно кликом на крестик
-    const closeButton = page.locator('button:has-text("close")').or(page.locator('.fixed button').first());
     // Так как мы удалили панель согласования, кнопка закрытия модалки работает корректно
     const closeIcon = page.locator('svg.lucide-x').first();
     await closeIcon.click({ force: true });
