@@ -25,7 +25,7 @@ interface FeedbackSectionProps {
 export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSectionProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7 ");
-  const [productType, setProductType] = useState("Антрацит АО / АМ / АС в мешках");
+  const [productType, setProductType] = useState("Антрацит АО/АМ/АС в мешках");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [agree, setAgree] = useState(false);
@@ -187,10 +187,13 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                     onChange={(e) => setProductType(e.target.value)}
                     className="w-full bg-[#0a0a0c] border border-slate-900 rounded-lg p-3 text-xs text-white outline-none cursor-pointer focus:border-slate-800"
                   >
-                    <option>Антрацит АО / АМ / АС в мешках</option>
-                    <option>Уголь Марка Т (Тощий) навалом</option>
-                    <option>Дрова: Дуб, Акация (колотые)</option>
+                    <option>Антрацит АО/АМ/АС в мешках</option>
+                    <option>Антрацит АО/АМ/АС тоннами</option>
+                    <option>Уголь марки Т (Тощий) навалом</option>
+                    <option>Уголь ДГ (Длиннопламенный) навалом</option>
+                    <option>Дрова: Берёза, Дуб, Акация</option>
                     <option>Песок, Шлак, Щебень строительный</option>
+                    <option>Вывоз строительного мусора</option>
                     <option>Другой объем / Нужен индивидуальный расчет</option>
                   </select>
                 </div>
@@ -257,7 +260,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   <div>
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">Главный склад ОПС</span>
                     <p className="text-white font-medium text-xs font-sans mt-0.5">
-                      Донецк, ул. Промышленная, 14 (ориентир – оптовая база ОПС)
+                      Донецк, ул. Углегорская, 1
                     </p>
                   </div>
                 </div>
@@ -283,7 +286,10 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   <div>
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">Отдел продаж</span>
                     <a href="tel:+79493401011" className="text-white font-black text-sm font-display mt-0.5 block hover:opacity-80 transition-opacity">
-                      +7 (949) 340-10-11
+                      +7 (949) 340-10-11 <span className="text-[10px] text-slate-500 font-normal">(Феникс)</span>
+                    </a>
+                    <a href="tel:+79889946896" className="text-white font-black text-sm font-display mt-1 block hover:opacity-80 transition-opacity">
+                      +7 (988) 994-68-96 <span className="text-[10px] text-slate-500 font-normal">(МТС)</span>
                     </a>
                   </div>
                 </div>
@@ -296,7 +302,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
               
               {loadMap ? (
                 <iframe 
-                  src="https://yandex.ru/map-widget/v1/?ll=37.80285%2C48.015884&z=16" 
+                  src="https://yandex.ru/map-widget/v1/?ll=37.80285%2C48.015884&z=16&text=Донецк%20Углегорская%201" 
                   title="Интерактивная карта проезда к складу ГориЯсно на ул. Углегорская, 1"
                   loading="lazy"
                   width="100%" 
@@ -336,7 +342,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   <div className="absolute bottom-4 left-4 right-4 bg-[#121216]/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-slate-855/80 flex items-center justify-between z-10 font-sans">
                     <div>
                       <h4 className="text-[10px] uppercase font-bold text-slate-400">Маршрут проезда</h4>
-                      <p className="text-[11px] text-white font-medium mt-0.5">ул. Промышленная, 14, въезд со светофора</p>
+                      <p className="text-[11px] text-white font-medium mt-0.5">ул. Углегорская, 1</p>
                     </div>
                     <button type="button" className={`p-1.5 rounded-lg ${getThemeBadgeClass()} text-xs font-semibold shrink-0 cursor-pointer`}>
                       <Compass className="w-4 h-4" />

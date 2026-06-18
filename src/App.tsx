@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { 
-  MessageCircle, 
+  MessageSquare, 
   Send, 
   MapPin, 
   HelpCircle, 
@@ -15,7 +15,8 @@ import {
   CheckCircle,
   FileText,
   Sliders,
-  Sparkles
+  Sparkles,
+  Phone
 } from "lucide-react";
 
 import { Product, FeedbackSubmission, MockupConfig } from "./types";
@@ -218,8 +219,8 @@ export default function App() {
             <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-400 font-sans justify-center">
               <a href="#privacy" className="hover:text-white">Политика конфиденциальности</a>
               <a href="#rules" className="hover:text-white">Договор публичной оферты</a>
-              <a href="https://t.me/" className="hover:text-white text-sky-400">Telegram</a>
-              <a href="https://wa.me/" className="hover:text-white text-green-400">WhatsApp</a>
+              <a href="https://t.me/ugol_donbassa" className="hover:text-white text-sky-400">Telegram</a>
+              <a href="tel:+79889946896" className="hover:text-white text-orange-400">МТС: +7 (988) 994-68-96</a>
             </div>
 
           </div>

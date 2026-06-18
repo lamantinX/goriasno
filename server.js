@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
@@ -19,16 +20,36 @@ function escapeHTML(str) {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
-app.post('/api/leads', async (req, res) => {
+const leadLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Слишком много запросов. Попробуйте позже.' },
+});
+
+app.post('/api/leads', leadLimiter, async (req, res) => {
   try {
-    const name = escapeHTML(req.body.name);
-    const phone = escapeHTML(req.body.phone);
-    const productName = escapeHTML(req.body.productName);
-    const message = escapeHTML(req.body.message);
-    const sourceForm = escapeHTML(req.body.sourceForm);
-    
+    const { name, phone, productName, message, sourceForm } = req.body;
+
+    if (!name || typeof name !== 'string' || name.trim().length === 0 || name.length > 100) {
+      return res.status(400).json({ success: false, error: 'Invalid name' });
+    }
+    if (!phone || typeof phone !== 'string' || phone.length < 7 || phone.length > 20) {
+      return res.status(400).json({ success: false, error: 'Invalid phone' });
+    }
+    if (productName && (typeof productName !== 'string' || productName.length > 200)) {
+      return res.status(400).json({ success: false, error: 'Invalid product name' });
+    }
+    if (message && (typeof message !== 'string' || message.length > 1000)) {
+      return res.status(400).json({ success: false, error: 'Message too long' });
+    }
+    if (sourceForm && (typeof sourceForm !== 'string' || sourceForm.length > 100)) {
+      return res.status(400).json({ success: false, error: 'Invalid source form' });
+    }
+
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
@@ -37,14 +58,20 @@ app.post('/api/leads', async (req, res) => {
       return res.status(500).json({ success: false, error: 'Server configuration error' });
     }
 
+    const escName = escapeHTML(name);
+    const escPhone = escapeHTML(phone);
+    const escProductName = escapeHTML(productName);
+    const escMessage = escapeHTML(message);
+    const escSourceForm = escapeHTML(sourceForm);
+
     const text = `
 🆕 <b>Новая заявка с сайта</b>
 
-👤 <b>Имя:</b> ${name || 'Не указано'}
-📞 <b>Телефон:</b> ${phone}
-${productName ? `📦 <b>Товар:</b> ${productName}\n` : ''}
-${message ? `💬 <b>Сообщение:</b> ${message}\n` : ''}
-📍 <b>Форма:</b> ${sourceForm || 'Неизвестно'}
+👤 <b>Имя:</b> ${escName || 'Не указано'}
+📞 <b>Телефон:</b> ${escPhone}
+${escProductName ? `📦 <b>Товар:</b> ${escProductName}\n` : ''}
+${escMessage ? `💬 <b>Сообщение:</b> ${escMessage}\n` : ''}
+📍 <b>Форма:</b> ${escSourceForm || 'Неизвестно'}
     `.trim();
 
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
