@@ -1,0 +1,35 @@
+title = "goriasno secret scanning rules"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "telegram-bot-token"
+description = "Telegram Bot API Token"
+regex = '''[0-9]{8,10}:[A-Za-z0-9_-]{30,44}'''
+keywords = ["telegram"]
+
+[[rules]]
+id = "gemini-api-key"
+description = "Google Gemini API Key"
+regex = '''AIza[0-9A-Za-z_-]{35}'''
+keywords = ["AIza", "gemini"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API key assignment"
+regex = '''(?i)(api[_-]?key|secret|token|password)\s*[=:]\s*['"][0-9a-zA-Z]{20,}['"]'''
+keywords = ["api_key", "apikey", "secret", "token", "password"]
+
+[allowlist]
+description = "Allowlisted paths and placeholders"
+paths = [
+  '''.env\.example''',
+  '''\.gstack/security-reports/.*\.json''',
+]
+regexes = [
+  '''your_bot_token_here''',
+  '''MY_GEMINI_API_KEY''',
+  '''MY_APP_URL''',
+  '''your_chat_id_here''',
+]
