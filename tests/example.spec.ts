@@ -28,11 +28,11 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     await firewoodTab.click({ force: true });
 
     // Проверяем, что в списке отображается товар с дровами
-    const firewoodCard = page.locator('h3:has-text("Дрова: Дуб, Акация")');
+    const firewoodCard = page.locator('h3:has-text("Дрова: Берёза, Дуб, Акация")');
     await expect(firewoodCard).toBeVisible();
 
     // Проверяем, что уголь отфильтрован (не должен быть виден)
-    const coalCard = page.locator('h3:has-text("Уголь Марка Т")');
+    const coalCard = page.locator('h3:has-text("Уголь марки Т (Тощий)")');
     await expect(coalCard).not.toBeVisible();
   });
 
@@ -46,7 +46,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     await page.locator('input[placeholder="+7 (___) ___-__-__"]').fill('+7 949 111-22-33');
 
     // Выбираем категорию товара в выпадающем списке
-    await page.locator('select').selectOption('Дрова: Дуб, Акация (колотые)');
+    await page.locator('select').selectOption('Дрова: Берёза, Дуб, Акация');
 
     // Ставим чекбокс согласия ФЗ-152
     const consentCheckbox = page.locator('input[type="checkbox"]');
