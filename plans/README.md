@@ -21,7 +21,7 @@
 | 005 | [plans/005-seo-and-verification.md](plans/005-seo-and-verification.md) | P2 | M | 004 | DONE |
 | 006 | [plans/006-clean-up-and-bug-fixes.md](plans/006-clean-up-and-bug-fixes.md) | P1 | M | 005 | DONE |
 | 007 | [plans/007-e2e-testing-and-dx.md](plans/007-e2e-testing-and-dx.md) | P1 | M | 006 | DONE |
-| 008 | [plans/008-stale-e2e-suite.md](plans/008-stale-e2e-suite.md) | P1 | M | — | BLOCKED (Данные в data.ts не закоммичены в git, поэтому worktree использует старые данные) |
+| 008 | [plans/008-stale-e2e-suite.md](plans/008-stale-e2e-suite.md) | P1 | M | — | DONE |
 | 009 | [plans/009-undefined-tailwind-color-tokens.md](plans/009-undefined-tailwind-color-tokens.md) | P1 | S-M | — | DONE |
 | 010 | [plans/010-self-hosted-fonts-fix.md](plans/010-self-hosted-fonts-fix.md) | P1 | M | 009 | TODO |
 | 011 | [plans/011-service-worker-fix.md](plans/011-service-worker-fix.md) | P1 | M | 010 | TODO |
