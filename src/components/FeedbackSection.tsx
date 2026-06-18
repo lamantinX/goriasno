@@ -191,6 +191,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                     <option>Антрацит АО/АМ/АС тоннами</option>
                     <option>Уголь марки Т (Тощий) навалом</option>
                     <option>Уголь ДГ (Длиннопламенный) навалом</option>
+                    <option>Уголь ДГ (Длиннопламенный) в мешках</option>
                     <option>Дрова: Берёза, Дуб, Акация</option>
                     <option>Песок, Шлак, Щебень строительный</option>
                     <option>Вывоз строительного мусора</option>
