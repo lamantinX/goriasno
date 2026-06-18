@@ -5,7 +5,6 @@
 
 import React, { useState } from "react";
 import { ShoppingBag, MapPin, CheckCircle, Flame, ArrowDownCircle, Info, Calendar, Scale, ShieldCheck, Truck } from "lucide-react";
-import { DELIVERY_AREAS } from "../data";
 
 interface HeroProps {
   theme: "slate-fire" | "cool-slate" | "cozy-wood";

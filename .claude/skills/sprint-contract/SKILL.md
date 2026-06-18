@@ -34,8 +34,7 @@ complete because it "looks done" — evidence is required.
 
 ### 4. Implement
 - Minimal diff. No unrelated refactors. Preserve API contracts and existing behavior.
-- Delegate narrow self-contained subtasks to a subagent (Task tool / `cavecrew`); review every delegated diff before accepting. Compressed subagent output preserves main-context capacity.
-- Optional polish for Complex/Core: run `/simplify` or the code-simplifier plugin agent on modified files.
+- Delegate narrow self-contained subtasks to a subagent (Task tool / `Explore`); review every delegated diff before accepting.
 
 ### 5. Verify
 - Verify **every** criterion; record command + output in the Evidence section.
@@ -51,16 +50,16 @@ complete because it "looks done" — evidence is required.
 
 `docs/sprints/<slug>.md` must contain: Sprint, Contract with precise criteria, Evidence
 (command/output per criterion), Evaluation ending in `PASS` or `PASS (Self-Evaluated)`.
-The sprint-gate hook (`scripts/sprint-gate.ps1`, wired into `.git/hooks/pre-push` by
-`scripts/install-hooks.ps1`) blocks `git push` until this holds. Then append the run-log
+The sprint-gate hook (`scripts/sprint-gate.sh`, wired into `.git/hooks/pre-push` by
+`scripts/install-hooks.sh`) blocks `git push` until this holds. Then append the run-log
 (`docs/ai-runs/<YYYY-MM-DD>-<slug>.md` per `docs/ai-runs/_TEMPLATE.md`).
 
-Scaffold both artifacts with `scripts/sprint-artifacts.ps1` (PowerShell — the project is
-Windows-first; `.sh` references are obsolete):
+Scaffold both artifacts with `scripts/sprint-artifacts.sh` (bash — the project runs on
+WSL2/Linux; `.ps1` references are obsolete):
 ```
-pwsh scripts/sprint-artifacts.ps1 sprint  -s <slug> -t "Title" -c <Class>
-pwsh scripts/sprint-artifacts.ps1 trivial -s <slug> "reason"
-pwsh scripts/sprint-artifacts.ps1 runlog  -s <slug> "Title"
+bash scripts/sprint-artifacts.sh sprint  --slug <slug> --title "Title" --class <Class>
+bash scripts/sprint-artifacts.sh trivial --slug <slug> -- "reason"
+bash scripts/sprint-artifacts.sh runlog  --slug <slug> --title "Title"
 ```
 It ships the skeleton with `Result: PENDING`, which you replace with the real verdict after
 evaluating. Create them yourself as part of finishing the task — don't ask the user first.

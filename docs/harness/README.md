@@ -3,7 +3,7 @@
 Global-Harness-Version: 0.2.0
 Project-Harness-Version: goriasno-v2
 Last-Sync: 2026-06-17
-Local-Overrides: 7-dimension scoring rubric (see `.claude/rules/meta-harness.md`); Windows PowerShell scripts in `scripts/`.
+Local-Overrides: 7-dimension scoring rubric (see `.claude/rules/meta-harness.md`); bash enforcement scripts in `scripts/`.
 
 ## Structure
 
@@ -14,7 +14,7 @@ Local-Overrides: 7-dimension scoring rubric (see `.claude/rules/meta-harness.md`
 | `.claude/rules/` | Operational rules: `task-routing.md`, `meta-harness.md`, `testing.md`, `context-budget.md`, `security.md`. |
 | `.claude/skills/` | Workflows. Harness-critical: `sprint-contract`, `run-logging`, `feature-implementation`, `bug-investigation`, `release-check`, `improve`. |
 | `.claude/agents/` | Specialist agents: `hostile-evaluator`, `security-reviewer`, `test-writer`. |
-| `scripts/` | Enforcement + scaffolding: `sprint-gate.ps1`, `sprint-artifacts.ps1`, `run-log-check.ps1`, `install-hooks.ps1`. |
+| `scripts/` | Enforcement + scaffolding: `sprint-gate.sh`, `sprint-artifacts.sh`, `run-log-check.sh`, `install-hooks.sh`. |
 | `docs/ai-runs/` | Run logs (one per Standard+ task) + `_TEMPLATE.md` + `harness-scores.md` + `harness-improvements.md`. |
 | `docs/sprints/` | Sprint artifacts (`<slug>.md`, `<slug>.trivial`) + `_TEMPLATE.md`. |
 | `plans/` | Approved execution plans (`<NNN>-<slug>.md`) from `improve plan`. |
@@ -29,7 +29,7 @@ Local-Overrides: 7-dimension scoring rubric (see `.claude/rules/meta-harness.md`
 5. **Verify** every Contract criterion + `npm run verify` (`testing.md`).
 6. **Evaluate** against the Contract → `Result: PASS`.
 7. **Log** the run in `docs/ai-runs/` using `_TEMPLATE.md`.
-8. **Gate** the PR via `scripts/sprint-gate.ps1` (enforced by the pre-push hook).
+8. **Gate** the PR via `scripts/sprint-gate.sh` (enforced by the pre-push hook).
 
 ## Meta-harness loop (concrete)
 
@@ -43,25 +43,24 @@ Local-Overrides: 7-dimension scoring rubric (see `.claude/rules/meta-harness.md`
 
 | Gate | Mechanism | What it blocks |
 |---|---|---|
-| Sprint artifact exists and `Result: PASS` | `scripts/sprint-gate.ps1`, wired into `.git/hooks/pre-push` via `scripts/install-hooks.ps1` | Pushing a branch with no passing sprint. |
-| Run log appeared after a Standard+ task | `scripts/run-log-check.ps1` (run by the agent at task end) | Forgetting to log a run. |
+| Sprint artifact exists and `Result: PASS` | `scripts/sprint-gate.sh`, wired into `.git/hooks/pre-push` via `scripts/install-hooks.sh` | Pushing a branch with no passing sprint. |
+| Run log appeared after a Standard+ task | `scripts/run-log-check.sh` (run by the agent at task end) | Forgetting to log a run. |
 | `npm run verify` before commit | Agent discipline + `testing.md` rule | Committing broken build/lint. |
 | Sensitive surface touched without Core-risk | `security.md` rule + `security-reviewer` agent | Not auto-enforced yet — see improvement proposals. |
 
 Install the git hook once per clone:
-```powershell
-pwsh scripts/install-hooks.ps1
+```bash
+bash scripts/install-hooks.sh
 ```
 
 ## Skills actually used by this project
 
-The `.claude/skills/` directory contains many skills; only the following are default-relevant to goriasno (a React/Vite/Tailwind product site). Others may be loaded on explicit request but are not default context.
+The `.claude/skills/` directory holds only skills relevant to goriasno (a React/Vite/Tailwind product site). Unrelated SaaS/experimentation marketing skills were removed; the set below is the whole inventory. Load any of them when its trigger fires.
 
-- **Harness-critical:** `sprint-contract`, `run-logging`, `feature-implementation`, `bug-investigation`, `release-check`, `improve`, `meta-harness-optimize`.
-- **Token/context:** `caveman`, `cavecrew`, `caveman-commit`, `caveman-review`.
-- **Domain (product site):** `copywriting`, `cro`, `seo-audit`, `ai-seo`, `content-strategy`, `analytics`, `analytics-instrumentation`, `schema`, `social`, `launch`, `marketing-ideas`, `marketing-psychology`, `pricing`, `programmatic-seo`, `site-architecture`, `ab-testing`, `competitor-profiling`, `competitors`, `customer-research`, `product-marketing`, `product-audit`.
-
-Skills **not** default-relevant (available but not loaded by default): `ads`, `ad-creative`, `aso`, `cold-email`, `churn-prevention`, `paywalls`, `referrals`, `revops`, `sales-enablement`, `sms`, `directory-submissions`, `co-marketing`, `public-relations`, `free-tools`, `lead-magnets`, `prospecting`, `community-marketing`.
+- **Harness-critical:** `sprint-contract`, `run-logging`, `feature-implementation`, `bug-investigation`, `release-check`, `improve`.
+- **Ponytail (lazy senior dev):** `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-help`.
+- **Domain (product site):** `copywriting`, `cro`, `ai-seo`, `content-strategy`, `analytics`, `analytics-instrumentation`, `launch`, `marketing-ideas`, `marketing-psychology`, `pricing`, `programmatic-seo`, `competitor-profiling`, `customer-research`, `product-marketing`, `product-audit`.
+- **Utility:** `image`.
 
 ## Test commands
 
