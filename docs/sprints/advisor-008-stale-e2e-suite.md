@@ -1,6 +1,6 @@
 # Sprint: Fix stale E2E selectors and restore verification baseline
 
-> Copy this file to `docs/sprints/<slug>.md`. Scaffold via `pwsh scripts/sprint-artifacts.ps1 sprint -s <slug> -t "Title" -c Standard`. Replace `Result: PENDING` with the real verdict after evaluating.
+> Copy this file to `docs/sprints/<slug>.md`. Scaffold via `bash scripts/sprint-artifacts.sh sprint --slug <slug> --title "Title" --class Standard`. Replace `Result: PENDING` with the real verdict after evaluating.
 
 Branch: advisor/008-stale-e2e-suite · Date: 2026-06-18 · Class: Standard
 

@@ -37,10 +37,18 @@ Never batch applications. One small, reversible, evidence-linked change per Meta
 - **Proposal:** Create the actual enforcement scripts (`sprint-gate.ps1`, `sprint-artifacts.ps1`, `run-log-check.ps1`, `install-hooks.ps1`) and wire the sprint-gate into `.git/hooks/pre-push`.
 - **Status:** APPLIED — 2026-06-17. All four scripts created; `install-hooks.ps1` run to install the pre-push hook. Sprint-gate now blocks pushes with no passing sprint.
 - **Before/after:** before, push was unguarded and the "hook" was fictional; after, `git push` invokes `sprint-gate.ps1` and fails on a missing/non-passing sprint.
+- **Re-applied — 2026-06-19 (run `2026-06-19-harness-bash-migration`):** the 2026-06-17 scripts were PowerShell, but the project runs on Linux/WSL2 with `pwsh` **not installed** — so the pre-push hook (`pwsh scripts/sprint-gate.ps1`) was a silent no-op (or errored). Ported all four scripts 1:1 to bash (`scripts/*.sh`), deleted the `.ps1`, and regenerated the hook to call `bash scripts/sprint-gate.sh`. Verified end-to-end: `git push --dry-run` now runs the gate under bash and passes/fails correctly. This closes the Linux-portability gap the original application left open.
 
 ## Proposal 005 — PROPOSED
 - **Date proposed:** 2026-06-17
 - **Dimension:** context efficiency + safety (scored 3 and 2; both lacked evidence)
 - **Evidence:** No run log in either evaluation records the files loaded or whether a pre-task sensitive-surface scan was done. "No evidence in log" is the dominant scoring note. The rubric works, but the logs do not feed it.
 - **Proposal:** Add a "Files in / out" and "Sensitive surfaces touched" field to the run-log template (already added in `_TEMPLATE.md`); have `run-log-check.ps1` warn (not fail) if the "Sensitive surfaces touched" field reads "N/A" for a run that touched `src/` or `server.js`.
+- **Status:** PARTIALLY APPLIED — 2026-06-19 (run `2026-06-19-harness-bash-migration`). The "Files in/out" and "Sensitive surfaces touched" fields are in `_TEMPLATE.md` and were exercised in this run's log. The `run-log-check.sh` warn-on-missing-sensitive-surface behavior is still **PROPOSED** — not implemented (it is a distinct feature, out of scope for the bash-migration task).
+
+## Proposal 006 — PROPOSED
+- **Date proposed:** 2026-06-19
+- **Dimension:** correctness (sourced from the 2026-06-19 harness-bash-migration run)
+- **Evidence:** `AGENTS.md` and `docs/harness/README.md` both still state "Playwright e2e: pending Plan 007", but Plan 007 is DONE (`playwright.config.ts` and `npm run test` exist and work — confirmed in `plans/018` and `plans/README`). A second stale line: the bash port of `sprint-artifacts.sh` inherited a latent bug (sed `|` delimiter collided with the `Trivial | Standard | Complex | Core-risk` template pattern); the PowerShell original never hit it because `-replace` uses different semantics. Both are "the docs/scripts drift from reality" — the same failure mode this harness exists to catch.
+- **Proposal:** Sweep docs for "pending Plan 007" (now DONE) and replace with the actual `npm run test`; and add a one-line harness self-test that scaffolds + validates a sprint file so the sed-substitution path is exercised automatically (e.g. a `scripts/selftest.sh` or a `verify`-adjacent check). Small, reversible.
 - **Status:** PROPOSED — pending the next Meta-harness task.

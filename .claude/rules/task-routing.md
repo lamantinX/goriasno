@@ -16,7 +16,7 @@ Every task is classified **before** context loading. The tier decides the plan, 
 - **Trigger:** a focused feature or fix, ≤5 files, no sensitive surface (see `security.md`), no new dependency, no architectural change.
 - **Approval:** not required (the user's request is the approval).
 - **Context budget:** Tiny (≤5 files) or Medium (≤15) — escalate only with a named reason.
-- **Verification:** every Contract criterion + `npm run verify`. UI changes: manual browser check via `/browse` or `npm run preview` (Playwright pending Plan 007).
+- **Verification:** every Contract criterion + `npm run verify`. UI changes: manual browser check via `npm run preview` + screenshot (Playwright pending Plan 007).
 - **Run log:** required.
 - **Sprint artifact:** `docs/sprints/<slug>.md` with Self-Critique + Self-Evaluation. End Evaluation with `Result: PASS (Self-Evaluated)`.
 

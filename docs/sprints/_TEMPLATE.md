@@ -1,6 +1,6 @@
 # Sprint: <title>
 
-> Copy this file to `docs/sprints/<slug>.md`. Scaffold via `pwsh scripts/sprint-artifacts.ps1 sprint -s <slug> -t "Title" -c Standard`. Replace `Result: PENDING` with the real verdict after evaluating.
+> Copy this file to `docs/sprints/<slug>.md`. Scaffold via `bash scripts/sprint-artifacts.sh sprint --slug <slug> --title "Title" --class Standard`. Replace `Result: PENDING` with the real verdict after evaluating.
 
 Branch: <branch> · Date: <YYYY-MM-DD> · Class: Trivial | Standard | Complex | Core-risk
 

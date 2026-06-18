@@ -1,26 +1,27 @@
 ---
 name: run-logging
-description: Append a one-line run record to docs/ai-runs/ after completing a Standard/Complex/Core task. Use at task completion, right after the sprint evaluation passes.
+description: Create a run-log file in docs/ai-runs/ after completing a Standard/Complex/Core-risk/Research-only/Meta task. Use at task completion, right after the sprint evaluation passes.
 ---
 
 # Run logging
 
-Append exactly one row to `docs/ai-runs/<YYYY-MM>.md` (create the file with the header below if the
-month is new). One line, no prose.
+Create **one file per run** at `docs/ai-runs/<YYYY-MM-DD>-<slug>.md` from `docs/ai-runs/_TEMPLATE.md`. This is the canonical format — every run log in this project is a standalone file, not a row in a shared table.
 
-```markdown
-# AI run log — <YYYY-MM>
+## When to log
 
-| Date | Task | Class | Plan? | Approved? | Files read≈/changed | Tests | Result | Context note | Improvement idea |
-|---|---|---|---|---|---|---|---|---|---|
-```
+- **Always:** Standard, Complex, Core-risk, Research-only, Meta-harness tasks.
+- **Trivial:** skip **only if** no durable change AND no workflow issue surfaced. Otherwise log.
 
-Column rules:
-- **Class**: Trivial rows are not logged; Research only if it produced a decision worth tracking.
-- **Plan?**: `y` if `improve plan` (or an equivalent plan file in `plans/`) was used.
-- **Approved?**: `y` if the user approved the plan before execution; `—` when no plan was required.
-- **Files read≈/changed**: rough count, e.g. `12/3`. Honesty over precision.
-- **Result**: `ok` / `ok-after-fix` / `fail` (+ one word why).
-- **Context note**: what wasted tokens or what saved them. `—` if nothing notable.
-- **Improvement idea**: one short harness improvement suggestion, or `—`. These feed Meta tasks
-  (`docs/harness/README.md`).
+## How
+
+Scaffold and fill every section of `docs/ai-runs/_TEMPLATE.md`:
+
+- **Meta** — Date, Task Class, Trigger, Status (`SUCCESS`/`FAILED`/`ROLLED-BACK`/`PARTIAL`), Tags. A `SECURITY-SENSITIVE`/`HIGH-FRICTION`/`META` tag triggers **immediate** harness scoring.
+- **Scope** — Goal, Files in (modified), Files out (read only), Sensitive surfaces touched (per `security.md`, or "none").
+- **Changes** — bullet list, each traced to a Contract criterion. No unrelated changes.
+- **Evidence** — for each Contract criterion: `command` → result, plus `npm run verify`. Skipped checks need name + reason + remaining risk.
+- **Failures / Rework** — dead ends, rework. "None" is valid. Feeds the `speed` and `user friction` scoring dimensions.
+- **Workflow notes** — harness friction. Feeds the meta-harness improvement loop.
+- **Outcome** — one line: what is now true that was not before.
+
+This log is enforced by `scripts/run-log-check.sh` (run by the agent at task end) and feeds the 7-dimension scoring in `docs/ai-runs/harness-scores.md`.

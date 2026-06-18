@@ -14,3 +14,6 @@ coverage/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Windows artifacts
+/nul

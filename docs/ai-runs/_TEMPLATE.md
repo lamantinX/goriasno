@@ -1,6 +1,6 @@
 # AI Run: <title>
 
-> Copy this file to `docs/ai-runs/<YYYY-MM-DD>-<slug>.md`. Fill every section. Do not remove sections — write `N/A` with a reason if a section does not apply. This template is enforced by `scripts/run-log-check.ps1`.
+> Copy this file to `docs/ai-runs/<YYYY-MM-DD>-<slug>.md`. Fill every section. Do not remove sections — write `N/A` with a reason if a section does not apply. This template is enforced by `scripts/run-log-check.sh`.
 
 ## Meta
 - **Date:** <YYYY-MM-DD>

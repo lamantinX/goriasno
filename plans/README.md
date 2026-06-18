@@ -29,7 +29,7 @@
 | 013 | [plans/013-small-correctness-fixes.md](plans/013-small-correctness-fixes.md) | P2 | S | — | TODO |
 | 014 | [plans/014-dead-code-cleanup.md](plans/014-dead-code-cleanup.md) | P2 | M | 012, 013 | DONE |
 | 015 | [plans/015-ai-studio-template-leftovers.md](plans/015-ai-studio-template-leftovers.md) | P2 | S | — | TODO |
-| 016 | [plans/016-security-headers.md](plans/016-security-headers.md) | P2 | S | 012 | TODO |
+| 016 | [plans/016-security-headers.md](plans/016-security-headers.md) | P2 | S | 012 | DONE |
 | 017 | [plans/017-strict-typecheck-and-linter.md](plans/017-strict-typecheck-and-linter.md) | P3 | M | 014, 015 | TODO |
 | 018 | [plans/018-quiet-test-output.md](plans/018-quiet-test-output.md) | P2 | S | — | TODO |
 
@@ -70,7 +70,7 @@
 ### 018 (Meta-harness, вне набора 008–017)
 
 **018** (quiet test output) — независимый Meta-harness план (не продуктный
-аудит). Добавляет `scripts/run-quiet.ps1` — обёртку, которая гоняет
+аудит). Добавляет `scripts/run-quiet.sh` — обёртку, которая гоняет
 `npm run <script>` без вывода в контекст агента на успехе и печатает вывод
 только на провале. Правит `AGENTS.md`, `docs/harness/README.md`,
 `.claude/rules/testing.md` (документация контракт тест-команд). НЕ правит
