@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { User, Phone, X, ArrowRight, ShoppingCart } from "lucide-react";
 import type { Product, FeedbackSubmission } from "../types";
 
@@ -130,11 +130,45 @@ export default function Modal({
     return "focus:border-orange-500 focus:ring-orange-500/30";
   };
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
+
+  // Focus trap: keep Tab cycling inside the modal
+  const handleTrapFocus = useCallback((e: React.KeyboardEvent) => {
+    if (e.key !== "Tab" || !modalRef.current) return;
+    const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={formType === "order" ? "Оформление заказа" : "Заказ звонка"} onKeyDown={handleTrapFocus} ref={modalRef}>
       {/* Backdrop */}
-      <div 
+      <div
         onClick={onClose}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClose(); }}
+        role="button"
+        tabIndex={-1}
+        aria-label="Закрыть модальное окно"
         className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300"
       />
 
@@ -142,8 +176,9 @@ export default function Modal({
       <div className="bg-[#16161a] border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden relative shadow-2xl z-10 p-6 md:p-8 transform transition-transform duration-300 scale-100 font-sans">
         
         {/* Close Button */}
-        <button 
+        <button
           onClick={onClose}
+          aria-label="Закрыть"
           className="absolute top-4 right-4 text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-900 transition-all cursor-pointer"
         >
           <X className="w-5 h-5" />

@@ -50,7 +50,7 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-350 tracking-wide font-sans">
+          <nav aria-label="Основная навигация" className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-350 tracking-wide font-sans">
             <button 
               onClick={() => scrollToSection("catalog")} 
               className="hover:text-white cursor-pointer hover:underline decoration-orange-500 underline-offset-8 transition-all"
@@ -113,6 +113,7 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
             </a>
             <button
               onClick={() => setMobileMenuOpen(true)}
+              aria-label="Открыть меню"
               className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition-all"
             >
               <Menu className="w-6 h-6" />
@@ -124,7 +125,7 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
 
       {/* Mobile Drawer Menu (Expanded overlay as in image 2) */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[999] flex flex-col bg-[#121214] font-sans">
+        <div className="fixed inset-0 z-[999] flex flex-col bg-[#121214] font-sans" role="dialog" aria-modal="true" aria-label="Мобильное меню">
           
           {/* Drawer Top Header bar */}
           <div className="flex justify-between items-center px-6 h-20 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md">
@@ -132,9 +133,10 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
               <span className={getThemeTextClass()}>#</span>ГориЯсно<span className={getThemeTextClass()}>#</span>
             </div>
             
-            <button 
+            <button
               onClick={() => setMobileMenuOpen(false)}
-              className="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-white rounded-full hover:bg-slate-900 transition-all focus:outline-none"
+              aria-label="Закрыть меню"
+              className="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-white rounded-full hover:bg-slate-900 transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
             >
               <X className="w-8 h-8" />
             </button>

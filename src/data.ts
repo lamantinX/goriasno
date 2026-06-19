@@ -59,7 +59,7 @@ export const PRODUCTS: Product[] = [
     priceEstimate: "от 9 000",
     unit: "т",
     description: "Длиннопламенный газовый уголь марки ДГ (г. Луганск) — быстро разгорается, даёт сильный жар, подходит для котлов с шуровкой и слоевых топок. Экономичный вариант для отопления производственных помещений. Доставка самосвалами по Донецку и ДНР.",
-    image: "/images/products/coal-ton.jpg"
+    image: "/images/products/coal-dg.jpg"
   },
   {
     id: "coal-dg-bags",
@@ -114,14 +114,4 @@ export const PRODUCTS: Product[] = [
     description: "Вывоз строительного мусора и отходов после ремонта, демонтажа или строительства. Приедем, погрузим, вывезем — быстро, аккуратно, с грузчиками. Экономьте свои силы и время. Работаем по Донецку и пригороду.",
     image: "/images/products/debris-removal.jpg"
   }
-];
-
-export const DELIVERY_AREAS = [
-  { id: "donetsk-vorosh", name: "Донецк (Ворошиловский, Калининский, Киевский)", baseRate: 1500 },
-  { id: "donetsk-kirov", name: "Донецк (Кировский, Петровский, Куйбышевский)", baseRate: 1800 },
-  { id: "donetsk-prolet", name: "Донецк (Пролетарский, Буденновский, Ленинский)", baseRate: 1700 },
-  { id: "makeevka", name: "Макеевка (Центр, Червоногвардейский р-н)", baseRate: 2200 },
-  { id: "yasynuvata", name: "Ясиноватая и окрестности", baseRate: 3000 },
-  { id: "khartsyzk", name: "Харцызск / Зугрэс", baseRate: 3500 },
-  { id: "other", name: "Другой населенный пункт (расчет за км)", baseRate: 2000 }
 ];

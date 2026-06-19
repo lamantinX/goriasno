@@ -308,7 +308,14 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   className="rounded-2xl absolute inset-0 z-20"
                 ></iframe>
               ) : (
-                <div onClick={() => setLoadMap(true)} className="cursor-pointer w-full h-full relative z-20">
+                <div
+                  onClick={() => setLoadMap(true)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setLoadMap(true); }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Загрузить интерактивную карту"
+                  className="cursor-pointer w-full h-full relative z-20"
+                >
                   {/* Backing Map placeholder using standard styling */}
                   <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">
                     <img 
