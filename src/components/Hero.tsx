@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CheckCircle, ArrowDownCircle, Info, Scale, ShieldCheck, Truck } from "lucide-react";
+import { CheckCircle, ArrowDownCircle, Info, MapPin, Scale, ShieldCheck, Truck } from "lucide-react";
 
 interface HeroProps {
   theme: "slate-fire" | "cool-slate" | "cozy-wood";
@@ -163,51 +163,19 @@ export default function Hero({ theme }: HeroProps) {
                 </div>
               </div>
 
-              {/* Decorative Trust Feature: Live Donetsk Stock Metrics */}
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold tracking-wider text-slate-500 uppercase block font-sans">
-                  Наличие на Донецком складе (Обновлено сегодня)
-                </label>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-450">Антрацит (кулак, орех):</span>
-                      <span className="text-green-400 font-bold">140+ т</span>
-                    </div>
-                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-green-500 rounded-full" style={{ width: "85%" }}></div>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-450">Дрова колотые (смесь пород):</span>
-                      <span className="text-green-400 font-bold">95 скл.м</span>
-                    </div>
-                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-amber-500 rounded-full" style={{ width: "70%" }}></div>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-450">ДСП/Дрова хвойные:</span>
-                      <span className="text-green-400 font-bold">45 скл.м</span>
-                    </div>
-                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-amber-400 rounded-full" style={{ width: "45%" }}></div>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-950/40 border border-slate-900/80 rounded-xl p-3 space-y-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-450">Гравий / Отсев / Песок:</span>
-                      <span className="text-green-400 font-bold">220+ т</span>
-                    </div>
-                    <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-sky-500 rounded-full" style={{ width: "90%" }}></div>
-                    </div>
+              {/* Address & Hours */}
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-900 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="p-2 rounded-lg bg-slate-900 text-slate-300">
+                    <MapPin className={`w-5 h-5 ${getThemeTextClass()}`} />
+                  </span>
+                  <div className="space-y-0.5">
+                    <h4 className="font-bold text-xs text-white uppercase tracking-wider font-display">
+                      Адрес склада
+                    </h4>
+                    <p className="text-[11px] text-slate-400 leading-relaxed font-sans">
+                      г. Донецк, ул. Углегорская, 1. Работаем ежедневно с 08:00 до 18:00. Самовывоз — без выходных.
+                    </p>
                   </div>
                 </div>
               </div>

@@ -232,6 +232,9 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                     <Send className="w-4 h-4" />
                     <span>{isSubmitting ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ РАСЧЕТ'}</span>
                   </button>
+                  <p className="text-[10px] text-slate-500 text-center mt-2 font-sans">
+                    Менеджер перезвонит в течение 15 минут в рабочее время (08:00–18:00)
+                  </p>
                 </div>
 
               </form>
