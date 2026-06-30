@@ -92,6 +92,7 @@ export default function Modal({
         productName: submission.productName,
         message: submission.message,
         sourceForm: submission.sourceForm,
+        consent: agree,
       })
     })
     .then(res => res.json())

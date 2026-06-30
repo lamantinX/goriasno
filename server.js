@@ -45,7 +45,11 @@ const leadLimiter = rateLimit({
 
 app.post('/api/leads', leadLimiter, async (req, res) => {
   try {
-    const { name, phone, productName, message, sourceForm } = req.body;
+    const { name, phone, productName, message, sourceForm, consent } = req.body;
+
+      if (consent !== true) {
+        return res.status(400).json({ success: false, error: 'Consent required' });
+      }
 
     if (!name || typeof name !== 'string' || name.trim().length === 0 || name.length > 100) {
       return res.status(400).json({ success: false, error: 'Invalid name' });
