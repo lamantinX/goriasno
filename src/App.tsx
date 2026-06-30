@@ -121,6 +121,7 @@ export default function App() {
               />
             </div>
 
+            <main>
             {/* Hero promo block with Warehouse Status & Live Stock */}
             <div className="transition-all">
               <Hero
@@ -148,8 +149,10 @@ export default function App() {
                 theme={config.theme}
               />
             </div>
+          </main>
           </>
         ) : (
+          <main>
           /* Transaction check success state screen */
           <div className="transition-all">
             <SuccessState
@@ -158,6 +161,7 @@ export default function App() {
               theme={config.theme}
             />
           </div>
+          </main>
         )}
 
         {/* Global Footer trademark details */}
