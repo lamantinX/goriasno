@@ -117,7 +117,7 @@ ${escMessage ? `💬 <b>Сообщение:</b> ${escMessage}\n` : ''}
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.status(404).sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
