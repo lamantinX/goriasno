@@ -5,6 +5,10 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // Base public path. Defaults to "/" (custom domain / root deploy).
+    // Set BASE_PATH=/goriasno/ when deploying to a project subpath such as
+    // GitHub Pages (lamantinX.github.io/goriasno/). Trailing slash required.
+    base: process.env.BASE_PATH ?? '/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

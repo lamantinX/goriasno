@@ -1,8 +1,12 @@
 // Service Worker for ГориЯсно — app-shell caching with versioned cleanup.
 // Bump CACHE_NAME on every deploy that changes cached assets; the activate
 // handler deletes any cache whose name is not the current one.
-const CACHE_NAME = 'goryasno-v2';
-const APP_SHELL = ['/', '/index.html'];
+const CACHE_NAME = 'goryasno-v3';
+// Scope-relative app shell. registrationScope is the directory the SW lives in
+// (e.g. "/" at a root deploy or "/goriasno/" on a subpath deploy like GitHub
+// Pages). Avoids hardcoding absolute paths that break under a subpath.
+const registrationScope = (self.registration && self.registration.scope) || '/';
+const APP_SHELL = [registrationScope, `${registrationScope}index.html`];
 
 // On install: precache only the HTML app shell (small, stable). Hashed
 // JS/CSS/woff2 assets are picked up at runtime by the fetch handler
@@ -46,7 +50,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           return response;
         })
-        .catch(() => caches.match(request).then((r) => r || caches.match('/index.html')))
+        .catch(() => caches.match(request).then((r) => r || caches.match(`${registrationScope}index.html`)))
     );
     return;
   }
