@@ -489,6 +489,11 @@
   --color-sky-550: #0284c7;     /* between sky-500 (#0ea5e9) and sky-600 (#0284c7) */
 }
 
+:focus-visible {
+  outline: 2px solid #fe9a00;
+  outline-offset: 2px;
+}
+
 /* Custom glow and scrollbar utilities */
 ::-webkit-scrollbar {
   width: 6px;

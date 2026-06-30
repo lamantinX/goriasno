@@ -122,6 +122,7 @@ const modalRef = useRef<HTMLDivElement>(null);
         productName: submission.productName,
         message: submission.message,
         sourceForm: submission.sourceForm,
+        consent: agree,
       })
     })
     .then(res => res.json())
@@ -225,7 +226,7 @@ const modalRef = useRef<HTMLDivElement>(null);
           
           {/* Name input */}
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
+            <label htmlFor="lead-name" className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
               Ваше имя
             </label>
             <div className="relative">
@@ -233,6 +234,7 @@ const modalRef = useRef<HTMLDivElement>(null);
                 <User className="w-4 h-4" />
               </span>
               <input
+                id="lead-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -244,7 +246,7 @@ const modalRef = useRef<HTMLDivElement>(null);
 
           {/* Phone input */}
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
+            <label htmlFor="lead-phone" className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
               Номер телефона
             </label>
             <div className="relative">
@@ -252,6 +254,7 @@ const modalRef = useRef<HTMLDivElement>(null);
                 <Phone className="w-4 h-4" />
               </span>
               <input
+                id="lead-phone"
                 type="tel"
                 value={phone}
                 onChange={handlePhoneChange}
@@ -264,10 +267,11 @@ const modalRef = useRef<HTMLDivElement>(null);
           {/* Comment (only shown for standard order or if they want to add text) */}
           {(formType === "order" || formType === "callback") && (
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
+              <label htmlFor="lead-message" className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block font-sans">
                 Дополнительные пожелания (Необязательно)
               </label>
               <textarea
+                id="lead-message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Укажите объём, желаемое время звонка или детали въезда машины..."
@@ -278,7 +282,7 @@ const modalRef = useRef<HTMLDivElement>(null);
           )}
 
           {/* Checkbox FZ-152 */}
-          <label className="flex items-start gap-2 text-[10px] text-slate-500 cursor-pointer pt-2 pb-2">
+          <label className="flex items-start gap-2 text-[10px] text-slate-400 cursor-pointer pt-2 pb-2">
             <input 
               type="checkbox" 
               checked={agree} 

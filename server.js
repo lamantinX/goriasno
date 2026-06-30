@@ -28,9 +28,10 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
   );
   next();
 });
@@ -45,7 +46,11 @@ const leadLimiter = rateLimit({
 
 app.post('/api/leads', leadLimiter, async (req, res) => {
   try {
-    const { name, phone, productName, message, sourceForm } = req.body;
+    const { name, phone, productName, message, sourceForm, consent } = req.body;
+
+      if (consent !== true) {
+        return res.status(400).json({ success: false, error: 'Consent required' });
+      }
 
     if (!name || typeof name !== 'string' || name.trim().length === 0 || name.length > 100) {
       return res.status(400).json({ success: false, error: 'Invalid name' });
@@ -117,7 +122,7 @@ ${escMessage ? `💬 <b>Сообщение:</b> ${escMessage}\n` : ''}
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.status(404).sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
