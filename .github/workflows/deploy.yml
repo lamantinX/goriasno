@@ -2,8 +2,12 @@ name: CI/CD Pipeline
 
 on:
   push:
-  workflow_dispatch:
     branches: [ "main" ]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
 
 jobs:
   test:
@@ -30,42 +34,57 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
 
-      - name: Upload dist folder artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 1
-
   deploy:
     name: Deploy to Production
     needs: test
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Download dist folder artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
+      - uses: actions/checkout@v4
 
-      - name: Copy files via SSH
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Build production bundle
+        run: |
+          npm ci
+          npm run build
+
+      - name: Pack deploy tarball
+        run: |
+          mkdir -p bundle/dist
+          cp -r dist/. bundle/dist/
+          cp server.js package.json package-lock.json bundle/
+          tar -czf deploy.tar.gz -C bundle .
+
+      - name: Upload tarball to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "dist/*,server.js,package.json,package-lock.json"
-          target: "/var/www/goriasno"
+          source: "deploy.tar.gz"
+          target: "/tmp"
 
-      - name: Restart Server & Nginx
+      - name: Extract, install deps, restart service, smoke test
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /var/www/goriasno
-            npm ci --production
-            pm2 restart goriasno-server || pm2 start server.js --name goriasno-server
-            sudo systemctl restart nginx
+            set -e
+            cd /var/www/goryasno
+            tar -xzf /tmp/deploy.tar.gz
+            rm -f /tmp/deploy.tar.gz
+            chown -R deploy:deploy dist server.js package.json package-lock.json
+            sudo -u deploy npm ci --omit=dev
+            systemctl restart goryasno.service
+            sleep 2
+            systemctl is-active --quiet goryasno.service && echo "goryasno.service OK" || { echo "goryasno.service FAILED"; exit 1; }
+            curl -fsS -o /dev/null https://goryasno.ru/
+            [ "$(curl -s -o /dev/null -w '%{http_code}' https://goryasno.ru/no-such-page)" = "404" ] || { echo "404 check FAILED"; exit 1; }
+            echo "Deploy + smoke test passed"
