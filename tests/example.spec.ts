@@ -79,4 +79,33 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     await expect(modal).not.toBeVisible();
   });
 
+  test('Навигация на товарную страницу по клику ссылки', async ({ page }) => {
+    // Кликаем по ссылке на товар «Антрацит» в каталоге
+    const productLink = page.locator('a[href="/anthracite"]').first();
+    await expect(productLink).toBeVisible();
+    await productLink.click();
+
+    // Проверяем, что перешли на товарную страницу
+    await expect(page).toHaveURL(/\/anthracite/);
+
+    // Проверяем H1 с названием товара
+    const h1 = page.locator('h1');
+    await expect(h1).toContainText('Антрацит');
+    await expect(h1).toContainText('Донецке');
+  });
+
+  test('Прямое открытие товарной страницы /drova', async ({ page }) => {
+    await page.goto('/drova');
+
+    // Проверяем H1
+    const h1 = page.locator('h1');
+    await expect(h1).toContainText('Дрова');
+    await expect(h1).toContainText('Донецке');
+
+    // Проверяем наличие JSON-LD Product schema
+    const jsonLd = page.locator('script[type="application/ld+json"]');
+    const count = await jsonLd.count();
+    expect(count).toBeGreaterThanOrEqual(1);
+  });
+
 });

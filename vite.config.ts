@@ -10,6 +10,13 @@ export default defineConfig(() => {
     // GitHub Pages (lamantinX.github.io/goriasno/). Trailing slash required.
     base: process.env.BASE_PATH ?? '/',
     plugins: [react(), tailwindcss()],
+    // Пререндер '/' в статический HTML при `vite-react-ssg build`.
+    ssgOptions: {
+      script: 'async' as const,
+      format: 'esm' as const,
+      // '/anthracite' → dist/anthracite/index.html (совместимо с nginx try_files $uri $uri/).
+      dirStyle: 'nested' as const,
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

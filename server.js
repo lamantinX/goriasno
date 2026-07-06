@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 
 dotenv.config();
 
@@ -21,6 +22,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json({ limit: '10kb' }));
+
+// gzip для текстовых ответов (HTML, JS, CSS, JSON).
+// Keep in sync with nginx.conf gzip on.
+app.use(compression({
+  // Только для ответов > 1KB (мелкие не стоят CPU).
+  threshold: 1024,
+}));
 
 // Security headers — keep in sync with nginx.conf.
 app.use((req, res, next) => {
@@ -117,6 +125,16 @@ ${escMessage ? `💬 <b>Сообщение:</b> ${escMessage}\n` : ''}
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
+
+// Хэшированные ассеты Vite — неизменны, кешируем на 1 год.
+// Keep in sync with nginx.conf location ~* \.(?:...)$ expires 1y.
+app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets'), {
+  maxAge: '1y',
+  immutable: true,
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  },
+}));
 
 // Serve static files in production
 app.use(express.static(path.join(__dirname, 'dist')));

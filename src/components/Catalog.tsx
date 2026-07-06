@@ -135,13 +135,22 @@ export default function Catalog({ onSelectProduct, theme }: CatalogProps) {
                 {/* Dark Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60 z-10"></div>
                 
-                <img 
-                  src={product.image} 
-                  alt={product.name}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                />
+                <picture className="block w-full h-full">
+                  {/* WebP по конвенции: <image>.jpg → <image>.webp рядом */}
+                  <source
+                    type="image/webp"
+                    srcSet={product.image.replace(/\.jpg$/, '.webp')}
+                  />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    width={960}
+                    height={720}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                  />
+                </picture>
 
                 {/* Price Display */}
                 <div className="absolute bottom-3 right-3 z-10 bg-slate-900/90 backdrop-blur border border-slate-800 px-3 py-1.5 rounded-lg">
@@ -156,7 +165,13 @@ export default function Catalog({ onSelectProduct, theme }: CatalogProps) {
                 
                 <div className="space-y-2">
                   <h3 className="font-bold text-base text-white tracking-tight leading-snug font-display">
-                    {product.name}
+                    {product.slug ? (
+                      <a href={`/${product.slug}`} className="hover:underline">
+                        {product.name}
+                      </a>
+                    ) : (
+                      product.name
+                    )}
                   </h3>
                   <p className="text-slate-400 text-xs leading-relaxed font-sans line-clamp-3">
                     {product.description}

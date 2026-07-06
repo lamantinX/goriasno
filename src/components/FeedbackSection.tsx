@@ -321,9 +321,11 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                 >
                   {/* Backing Map placeholder using standard styling */}
                   <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">
-                    <img 
-                      src="/images/map-placeholder.svg" 
+                    <img
+                      src="/images/map-placeholder.svg"
                       alt="Карта проезда к складу"
+                      width={800}
+                      height={600}
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover grayscale opacity-30 contrast-125 select-none"

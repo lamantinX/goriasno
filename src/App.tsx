@@ -4,16 +4,20 @@
  */
 
 import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 import type { Product, FeedbackSubmission, MockupConfig } from "./types";
 
 import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Catalog from "./components/Catalog";
-import HowWeWork from "./components/HowWeWork";
-import FeedbackSection from "./components/FeedbackSection";
 import SuccessState from "./components/SuccessState";
 import Modal from "./components/Modal";
+
+// Контекст layout-а для дочерних роутов (Home, ProductPage) через <Outlet context>.
+export interface LayoutContext {
+  theme: MockupConfig["theme"];
+  onSelectProduct: (product: Product) => void;
+  onSubmitSuccess: (submission: FeedbackSubmission) => void;
+}
 
 
 export default function App() {
@@ -122,34 +126,15 @@ export default function App() {
             </div>
 
             <main>
-            {/* Hero promo block with Warehouse Status & Live Stock */}
-            <div className="transition-all">
-              <Hero
-                theme={config.theme}
+              {/* Дочерний роут (Home / ProductPage / NotFound) */}
+              <Outlet
+                context={{
+                  theme: config.theme,
+                  onSelectProduct: handleSelectProductForOrder,
+                  onSubmitSuccess: handleFormSubmissionSuccess,
+                } satisfies LayoutContext}
               />
-            </div>
-
-            {/* Catalog tab section */}
-            <div className="transition-all">
-              <Catalog
-                onSelectProduct={handleSelectProductForOrder}
-                theme={config.theme}
-              />
-            </div>
-
-            {/* Steps explanations section */}
-            <div className="transition-all">
-              <HowWeWork theme={config.theme} />
-            </div>
-
-            {/* Main bottom feedback with interactive map */}
-            <div className="transition-all">
-              <FeedbackSection
-                onSubmitSuccess={handleFormSubmissionSuccess}
-                theme={config.theme}
-              />
-            </div>
-          </main>
+            </main>
           </>
         ) : (
           <main>
