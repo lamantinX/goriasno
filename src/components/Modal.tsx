@@ -6,6 +6,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { User, Phone, X, ArrowRight, ShoppingCart } from "lucide-react";
 import type { Product, FeedbackSubmission } from "../types";
+import { reachGoal } from "../metrika";
 
 interface ModalProps {
   isOpen: boolean;
@@ -130,6 +131,7 @@ const modalRef = useRef<HTMLDivElement>(null);
       setIsSubmitting(false);
       if (data.success) {
         setError("");
+        reachGoal("form_submit", { sourceForm: submission.sourceForm });
         onSubmitSuccess(submission);
       } else {
         setError(data.error || "Ошибка при отправке");

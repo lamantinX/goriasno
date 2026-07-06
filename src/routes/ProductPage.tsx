@@ -3,11 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { useEffect } from "react";
 import { useParams, useOutletContext, Link } from "react-router-dom";
 import { Head } from "vite-react-ssg";
 import { Flame, ArrowRight, Grid, Scale, Layers } from "lucide-react";
 
 import { PRODUCTS } from "../data";
+import { reachGoal } from "../metrika";
 import type { Product } from "../types";
 import type { LayoutContext } from "../App";
 import NotFound from "./NotFound";
@@ -63,6 +65,13 @@ export default function ProductPage() {
 
   // Один слаг может объединять несколько SKU (мешки/тонны).
   const skus = PRODUCTS.filter(p => p.slug === slug);
+
+  useEffect(() => {
+    if (skus.length > 0) {
+      reachGoal("product_view", { product: slug });
+    }
+  }, [slug, skus.length]);
+
   if (skus.length === 0) return <NotFound />;
 
   // Primary — SKU с контентом страницы (longDescription).

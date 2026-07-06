@@ -13,6 +13,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import type { FeedbackSubmission } from "../types";
+import { reachGoal } from "../metrika";
 
 interface FeedbackSectionProps {
   onSubmitSuccess: (submission: FeedbackSubmission) => void;
@@ -100,6 +101,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
       setIsSubmitting(false);
       if (data.success) {
         setError("");
+        reachGoal("form_submit", { sourceForm: payload.sourceForm });
         onSubmitSuccess(payload);
       } else {
         setError(data.error || "Ошибка при отправке");

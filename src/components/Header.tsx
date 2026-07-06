@@ -5,6 +5,7 @@
 
 import { useState } from "react";
 import { Phone, Menu, X, Send } from "lucide-react";
+import { reachGoal } from "../metrika";
 
 interface HeaderProps {
   onOpenCallback: () => void;
@@ -80,15 +81,17 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
               </span>
               <span>Пн-Вс 08:00–18:00</span>
             </div>
-            <a 
-              href="tel:+79493401011" 
+            <a
+              href="tel:+79493401011"
+              onClick={() => reachGoal("phone_click", { phone: "mtc" })}
               className="flex items-center gap-2 text-white font-semibold text-sm hover:opacity-80 transition-all"
             >
               <Phone className={`w-4 h-4 ${getThemeTextClass()}`} />
               <span className="font-display">+7 (949) 340-10-11</span>
             </a>
-            <a 
-              href="tel:+79889946896" 
+            <a
+              href="tel:+79889946896"
+              onClick={() => reachGoal("phone_click", { phone: "mts" })}
               className="hidden xl:flex items-center gap-2 text-slate-300 font-semibold text-sm hover:opacity-80 transition-all"
             >
               <Phone className="w-4 h-4 text-slate-400" />
@@ -105,8 +108,9 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
 
           {/* Mobile hamburger button */}
           <div className="md:hidden flex items-center gap-3">
-            <a 
+            <a
               href="tel:+79493401011"
+              onClick={() => reachGoal("phone_click", { phone: "mtc" })}
               className={`p-2.5 rounded-lg bg-slate-900 border border-slate-855 ${getThemeTextClass()}`}
             >
               <Phone className="w-5 h-5" />
@@ -194,9 +198,9 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
                 </div>
                 <div>
                   <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Отдел продаж (Феникс)</p>
-                  <a href="tel:+79493401011" className="text-lg font-black text-white font-display">+7 (949) 340-10-11</a>
+                  <a href="tel:+79493401011" onClick={() => reachGoal("phone_click", { phone: "mtc" })} className="text-lg font-black text-white font-display">+7 (949) 340-10-11</a>
                   <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-1.5">МТС</p>
-                  <a href="tel:+79889946896" className="text-lg font-black text-white font-display">+7 (988) 994-68-96</a>
+                  <a href="tel:+79889946896" onClick={() => reachGoal("phone_click", { phone: "mts" })} className="text-lg font-black text-white font-display">+7 (988) 994-68-96</a>
                 </div>
               </div>
 
