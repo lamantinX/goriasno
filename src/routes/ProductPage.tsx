@@ -95,6 +95,11 @@ export default function ProductPage() {
         <title>{title}</title>
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={pageUrl} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${SITE_ORIGIN}${primary.image}`} />
         {skus.map(sku => (
           <script key={sku.id} type="application/ld+json">
             {JSON.stringify(buildProductJsonLd(sku))}
@@ -103,6 +108,14 @@ export default function ProductPage() {
         {primary.faqs && primary.faqs.length > 0 && (
           <script type="application/ld+json">{JSON.stringify(buildFaqJsonLd(primary.faqs))}</script>
         )}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Каталог", item: `${SITE_ORIGIN}/` },
+            { "@type": "ListItem", position: 2, name: primary.name, item: pageUrl },
+          ],
+        })}</script>
       </Head>
 
       <section className="py-16 bg-[#0f0f12] border-t border-slate-900/40">
@@ -226,6 +239,48 @@ export default function ProductPage() {
               </div>
             </div>
           )}
+
+          {/* Похожие товары */}
+          {(() => {
+            const seenSlugs = new Set<string>();
+            const related = PRODUCTS.filter(p => {
+              if (!p.slug) return false;
+              if (p.slug === slug || seenSlugs.has(p.slug)) return false;
+              seenSlugs.add(p.slug);
+              return true;
+            }).slice(0, 3);
+            if (related.length === 0) return null;
+            return (
+              <div className="mt-12">
+                <h2 className="text-xl sm:text-2xl font-extrabold font-display text-white">Похожие товары</h2>
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {related.map(product => (
+                    <Link
+                      key={product.id}
+                      to={`/${product.slug!}`}
+                      className="group bg-[#15151a] border border-slate-900/80 rounded-2xl p-4 hover:border-slate-700 transition-all"
+                    >
+                      <div className="rounded-xl overflow-hidden mb-3">
+                        <picture className="block w-full">
+                          <source type="image/webp" srcSet={product.image.replace(/\.jpg$/, ".webp")} />
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            width={320}
+                            height={240}
+                            decoding="async"
+                            className="w-full h-32 object-cover"
+                          />
+                        </picture>
+                      </div>
+                      <h3 className="font-bold text-sm text-white font-display group-hover:text-orange-400 transition-colors">{product.name}</h3>
+                      <div className={`text-sm font-black font-display mt-1 ${accentText}`}>{product.priceEstimate} ₽<span className="text-[10px] text-slate-400 font-normal">/{product.unit}</span></div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
         </div>
       </section>

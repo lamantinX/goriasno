@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
 Sitemap: https://goryasno.ru/sitemap.xml
+
+User-agent: Yandex
+Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign
+Host: goryasno.ru
