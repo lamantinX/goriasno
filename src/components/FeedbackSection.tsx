@@ -304,12 +304,13 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
             <div className="h-64 rounded-2xl overflow-hidden border border-slate-900 relative group shadow-xl">
               
               {loadMap ? (
-                <iframe 
-                  src="https://yandex.ru/map-widget/v1/?ll=37.80285%2C48.015884&z=16&text=Донецк%20Углегорская%201" 
+                <iframe
+                  src="https://yandex.ru/map-widget/v1/?z=12&ol=biz&oid=183489295257"
                   title="Интерактивная карта проезда к складу ГориЯсно на ул. Углегорская, 1"
                   loading="lazy"
-                  width="100%" 
-                  height="100%" 
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
                   className="rounded-2xl absolute inset-0 z-20"
                 ></iframe>
               ) : (
