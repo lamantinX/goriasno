@@ -319,7 +319,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
                   role="button"
                   tabIndex={0}
                   aria-label="Загрузить интерактивную карту"
-                  className="cursor-pointer w-full h-full relative z-20"
+                  className="cursor-pointer absolute inset-0 z-20"
                 >
                   {/* Backing Map placeholder using standard styling */}
                   <div className="absolute inset-0 bg-[#0d0d10] flex items-center justify-center">

@@ -139,7 +139,28 @@ app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets'), {
 // Serve static files in production
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('*', (req, res) => {
+// SPA fallback: unknown HTML routes get index.html (so the client router can
+// render the NotFound route). But JSON-consuming clients — /api/* requests and
+// any *.json fetch (e.g. vite-react-ssg's static-loader-data-manifest and
+// per-route loader files after a deploy) — must never receive HTML. Returning
+// index.html for a missing .json makes the client's res.json() throw
+// "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON", which React
+// Router surfaces as its default "Unexpected Application Error!" screen.
+const isJsonRequest = (req) =>
+  req.path.startsWith('/api/') || req.path.endsWith('.json');
+
+app.get('*', (req, res, next) => {
+  if (isJsonRequest(req)) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  // Only hand the SPA shell to requests that look like HTML/navigations;
+  // anything else (a stray asset, a browser extension probe) 404s plainly.
+  const wantsHtml =
+    req.accepts(['html', 'json']) === 'html' ||
+    req.headers['sec-fetch-mode'] === 'navigate';
+  if (!wantsHtml) {
+    return res.status(404).type('text').send('Not found');
+  }
   res.status(404).sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 

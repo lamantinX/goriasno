@@ -26,6 +26,11 @@ const routes: RouteRecord[] = [
     path: '/',
     Component: Root,
     entry: 'src/App.tsx',
+    // Safety net: if a route loader throws (e.g. a stale/missing
+    // static-loader-data file after a deploy), React Router shows its default
+    // "Unexpected Application Error!" screen. Render the NotFound page instead
+    // so the site stays usable and matches the rest of the design.
+    ErrorBoundary: NotFound,
     children: [
       {index: true, Component: Home, entry: 'src/routes/Home.tsx'},
       {
