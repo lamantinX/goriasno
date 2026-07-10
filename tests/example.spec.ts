@@ -81,7 +81,7 @@ test.describe('Сайт-каталог ГориЯсно', () => {
 
   test('Навигация на товарную страницу по клику ссылки', async ({ page }) => {
     // Кликаем по ссылке на товар «Антрацит» в каталоге
-    const productLink = page.locator('a[href="/anthracite"]').first();
+    const productLink = page.locator('a[href="/anthracite/"]').first();
     await expect(productLink).toBeVisible();
     await productLink.click();
 
