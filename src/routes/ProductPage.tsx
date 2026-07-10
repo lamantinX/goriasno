@@ -76,7 +76,11 @@ export default function ProductPage() {
 
   // Primary — SKU с контентом страницы (longDescription).
   const primary = skus.find(p => p.longDescription) ?? skus[0];
-  const pageUrl = `${SITE_ORIGIN}/${slug}`;
+  // Trailing slash matches the actual served URL (express.static resolves
+  // /anthracite → dist/anthracite/index.html via 301 to /anthracite/).
+  // Keeping sitemap, canonical and og:url identical to the 200 URL avoids a
+  // self-redirecting canonical loop that caused Yandex to drop all pages.
+  const pageUrl = `${SITE_ORIGIN}/${slug}/`;
   const title = `${primary.name} в Донецке — купить со склада | ГориЯсно`;
   const metaDescription = `${primary.description.slice(0, 140)}… Доставка по ДНР. Тел: +7 (949) 340-10-11.`;
 
@@ -257,7 +261,7 @@ export default function ProductPage() {
                   {related.map(product => (
                     <Link
                       key={product.id}
-                      to={`/${product.slug!}`}
+                      to={`/${product.slug!}/`}
                       className="group bg-[#15151a] border border-slate-900/80 rounded-2xl p-4 hover:border-slate-700 transition-all"
                     >
                       <div className="rounded-xl overflow-hidden mb-3">

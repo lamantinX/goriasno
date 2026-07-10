@@ -166,7 +166,7 @@ export default function Catalog({ onSelectProduct, theme }: CatalogProps) {
                 <div className="space-y-2">
                   <h3 className="font-bold text-base text-white tracking-tight leading-snug font-display">
                     {product.slug ? (
-                      <a href={`/${product.slug}`} className="hover:underline">
+                      <a href={`/${product.slug}/`} className="hover:underline">
                         {product.name}
                       </a>
                     ) : (
