@@ -61,3 +61,23 @@ Supersedes the prior 3-dimension entry (context loading / safety checks / execut
 | user friction | 3 | 3 |
 
 The trend is real evidence driving real proposals, not a row of 5s. A harness that only scores 5s is not being scored.
+
+---
+
+## Evaluation: 2026-07-10 (run `2026-07-10-seo-canonical-trailing-slash`) — SECURITY-SENSITIVE, immediate scoring
+
+- **correctness (1-5):** 5. Root cause correctly diagnosed (sitemap ↔ 301 ↔ canonical trailing-slash loop). All 7 Contract criteria verified against `dist/` build output AND live production site (sitemap loc, canonical, og:url, internal links, no yandex-verification placeholder, verify pass, all 8 sitemap URLs return 200). Live re-check post-deploy confirms consistency.
+- **context efficiency (1-5):** 5. Run log records Files in/out explicitly. Context budget stated (Core — 10 files, each with reason). No speculative reads; diagnosis used targeted curl/grep on the live site + minimal source reads.
+- **diff minimality (1-5):** 5. Every hunk traces to a Contract criterion (sitemap→C1, pageUrl→C2/C3, links→C4, meta removal→C5). Plus one follow-up test-selector fix forced by the CI gate. No unrelated changes.
+- **safety (1-5):** 4. Correctly classified Core-risk (touches `public/` + production deploy). Sensitive surfaces named pre-task. User approval ("делай и деплой") recorded. Not a 5 only because no `security-reviewer` pass was run on the `public/sitemap.xml` change (the change is low-risk metadata, but the Core-risk workflow names that step).
+- **verification quality (1-5):** 4. Criterion-to-command mapping in both sprint and run log. `npm run verify` recorded (PASS). Live post-deploy curl checks recorded. The one gap: local Playwright skipped (webkit libs missing in WSL) — caught instead by CI, which is a real gate but means the first push failed publicly before the test-selector fix. See Failures.
+- **speed (1-5):** 3. One public CI failure (Playwright selector `a[href="/anthracite"]` not updated alongside the link change) required a second push. The pre-push `npm run test` would have caught it locally, but webkit browsers can't launch in this WSL environment. Net: two CI runs, ~7 min of extra wall time.
+- **user friction (1-5):** 5. One clarifying question asked up front (trailing-slash format) via AskUserQuestion; user answered with a counter-question, resolved with a concise explanation + proceeded. No corrections to the work itself.
+
+**Total logs evaluated:** 7 (cumulative)
+**Lowest dimension:** speed (3) — driven by the CI-failure-retry loop.
+
+**Evidence / notes:**
+- The CI gate did exactly its job: caught the stale test selector before any production code changed (deploy job is downstream of test). Production was never served broken code.
+- This is the first run to use the full Core-risk → CI-gated-deploy path end-to-end with live post-deploy verification. The workflow held.
+- Speed hit was real but bounded — a single selector string the local environment couldn't pre-validate.
