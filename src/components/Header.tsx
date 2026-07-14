@@ -27,14 +27,6 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
     return "bg-orange-500 text-slate-950 hover:bg-orange-400 hover:shadow-orange-500/20";
   };
 
-  const scrollToSection = (id: string) => {
-    setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-55 bg-slate-950/80 backdrop-blur-md border-b border-slate-900/80 transition-all duration-300">
@@ -52,24 +44,24 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
 
           {/* Desktop Navigation Links */}
           <nav aria-label="Основная навигация" className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-350 tracking-wide font-sans">
-            <button 
-              onClick={() => scrollToSection("catalog")} 
-              className="hover:text-white cursor-pointer hover:underline decoration-orange-500 underline-offset-8 transition-all"
+            <a
+              href="/#catalog"
+              className="hover:text-white hover:underline decoration-orange-500 underline-offset-8 transition-all"
             >
               Каталог
-            </button>
-            <button 
-              onClick={() => scrollToSection("process")} 
-              className="hover:text-white cursor-pointer hover:underline decoration-orange-500 underline-offset-8 transition-all"
+            </a>
+            <a
+              href="/#process"
+              className="hover:text-white hover:underline decoration-orange-500 underline-offset-8 transition-all"
             >
               Как мы работаем
-            </button>
-            <button 
-              onClick={() => scrollToSection("contacts")} 
-              className="hover:text-white cursor-pointer hover:underline decoration-orange-500 underline-offset-8 transition-all"
+            </a>
+            <a
+              href="/#contacts"
+              className="hover:text-white hover:underline decoration-orange-500 underline-offset-8 transition-all"
             >
               Контакты
-            </button>
+            </a>
           </nav>
 
           {/* Contact Actions */}
@@ -151,29 +143,45 @@ export default function Header({ onOpenCallback, theme }: HeaderProps) {
             
             {/* Custom Links */}
             <nav className="flex flex-col gap-6">
-              <button
-                onClick={() => scrollToSection("catalog")}
-                className="w-full text-left font-display font-medium text-2xl text-slate-200 hover:text-white py-4 border-b border-slate-900 flex justify-between items-center group cursor-pointer"
+              <a
+                href="/#catalog"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-left font-display font-medium text-2xl text-slate-200 hover:text-white py-4 border-b border-slate-900 flex justify-between items-center group"
               >
                 <span>Каталог</span>
                 <span className={`text-[12px] font-bold uppercase ${getThemeTextClass()}`}>В каталог &rarr;</span>
-              </button>
+              </a>
 
-              <button
-                onClick={() => scrollToSection("process")}
-                className="w-full text-left font-display font-medium text-2xl text-slate-200 hover:text-white py-4 border-b border-slate-900 flex justify-between items-center group cursor-pointer"
+              <a
+                href="/#process"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-left font-display font-medium text-2xl text-slate-200 hover:text-white py-4 border-b border-slate-900 flex justify-between items-center group"
               >
                 <span>Как мы работаем</span>
                 <span className={`text-[12px] font-bold uppercase ${getThemeTextClass()}`}>Процесс &rarr;</span>
-              </button>
+              </a>
 
-              <button
-                onClick={() => scrollToSection("contacts")}
-                className="w-full text-left font-display font-medium text-2xl text-slate-200 hover:text-white py-4 border-b border-slate-900 flex justify-between items-center group cursor-pointer"
+              <a
+                href="/#contacts"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-left font-display font-medium text-2xl text-slate-200 hover:text-white py-4 border-b border-slate-900 flex justify-between items-center group"
               >
                 <span>Контакты</span>
                 <span className={`text-[12px] font-bold uppercase ${getThemeTextClass()}`}>Адрес и карта &rarr;</span>
-              </button>
+              </a>
+            </nav>
+
+            {/* Product links group */}
+            <nav aria-label="Товарные страницы" className="flex flex-col gap-2 mt-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-sans pt-2">Товары</span>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                <a href="/anthracite/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Антрацит</a>
+                <a href="/ugol-marki-t/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Уголь марки Т</a>
+                <a href="/ugol-dg/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Уголь ДГ</a>
+                <a href="/drova/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Дрова</a>
+                <a href="/pesok-shcheben/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Песок/щебень</a>
+                <a href="/vyvoz-musora/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Вывоз мусора</a>
+              </div>
             </nav>
 
             {/* Bottom Contact card wrapper */}

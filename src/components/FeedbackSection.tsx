@@ -94,6 +94,7 @@ export default function FeedbackSection({ onSubmitSuccess, theme }: FeedbackSect
         productName: payload.productName,
         message: payload.message,
         sourceForm: payload.sourceForm,
+        consent: agree,
       })
     })
     .then(res => res.json())

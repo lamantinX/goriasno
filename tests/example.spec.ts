@@ -108,4 +108,53 @@ test.describe('Сайт-каталог ГориЯсно', () => {
     expect(count).toBeGreaterThanOrEqual(1);
   });
 
+  test('Уникальный <title> товарной страницы', async ({ page }) => {
+    // Тестовый webServer поднимает Vite dev-сервер, который отдаёт SPA-шелл,
+    // а не пререндер (пререндер живёт в dist/ после сборки). Поэтому проверяем
+    // отрендеренный DOM после гидрации: react-helmet выставляет уникальный
+    // <title> и одну description для каждой товарной страницы. Уникальность
+    // titles в исходном пререндеренном HTML доказана отдельно grep'ом по dist/.
+    await page.goto('/anthracite/');
+    await expect(page).toHaveTitle(/Купить антрацит в Донецке/);
+    expect(await page.locator('title').count()).toBe(1);
+
+    await page.goto('/drova/');
+    await expect(page).toHaveTitle(/Купить дрова в Донецке/);
+    expect(await page.locator('title').count()).toBe(1);
+
+    await page.goto('/vyvoz-musora/');
+    await expect(page).toHaveTitle(/Вывоз строительного мусора в Донецке/);
+    expect(await page.locator('title').count()).toBe(1);
+  });
+
+  test('В шапке и футере есть SEO-ссылки на товарные страницы', async ({ page }) => {
+    // На главной должны быть как минимум 2 ссылки на /anthracite/
+    // (шапка/моб. меню + футер) — реальные <a href>, индексируемые краулером.
+    const anthraciteLinks = page.locator('a[href="/anthracite/"]');
+    const count = await anthraciteLinks.count();
+    expect(count).toBeGreaterThanOrEqual(2);
+  });
+
+  test('Форма в футере отправляет consent в тело запроса', async ({ page }) => {
+    // Бэкенд Express (:3001) не запускается тест-харнессом, поэтому
+    // перехватываем исходящий запрос и fulfilled-ответом, и телом запроса:
+    // доказываем, что consent теперь уходит (раньше поле отсутствовало → 400).
+    await page.route('**/api/leads', (route) =>
+      route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' }),
+    );
+
+    await page.locator('input[placeholder="Иван"]').fill('Тест');
+    await page.locator('input[placeholder="+7 (___) ___-__-__"]').fill('+7 949 111-22-33');
+    await page.locator('select').selectOption('Дрова: Берёза, Дуб, Акация');
+    await page.locator('#contacts input[type="checkbox"]').check({ force: true });
+
+    const requestPromise = page.waitForRequest(
+      (r) => r.url().includes('/api/leads') && r.method() === 'POST',
+    );
+    await page.locator('#contacts button[type="submit"]').click();
+    const request = await requestPromise;
+    const body = request.postDataJSON();
+    expect(body.consent).toBe(true);
+  });
+
 });

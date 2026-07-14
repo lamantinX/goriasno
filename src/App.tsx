@@ -162,12 +162,25 @@ export default function App() {
               </p>
             </div>
 
-            {/* Quick anchors */}
-            <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-400 font-sans justify-center">
-              <a href="/privacy.html" className="hover:text-white">Политика конфиденциальности</a>
-              <a href="/privacy.html#offer" className="hover:text-white">Договор публичной оферты</a>
-              <a href="https://t.me/ugol_donbassa" className="hover:text-white text-sky-400">Telegram</a>
-              <a href="tel:+79889946896" className="hover:text-white text-orange-400">МТС: +7 (988) 994-68-96</a>
+            <div className="flex flex-col gap-4">
+              {/* Товарные страницы */}
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-slate-400 font-sans justify-center md:justify-end">
+                <a href="/anthracite/" className="hover:text-white">Антрацит</a>
+                <a href="/ugol-marki-t/" className="hover:text-white">Уголь марки Т</a>
+                <a href="/ugol-dg/" className="hover:text-white">Уголь ДГ</a>
+                <a href="/drova/" className="hover:text-white">Дрова</a>
+                <a href="/pesok-shcheben/" className="hover:text-white">Песок/щебень</a>
+                <a href="/vyvoz-musora/" className="hover:text-white">Вывоз мусора</a>
+                <a href="/#contacts" className="hover:text-white">Контакты</a>
+              </div>
+
+              {/* Quick anchors */}
+              <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-400 font-sans justify-center md:justify-end">
+                <a href="/privacy.html" className="hover:text-white">Политика конфиденциальности</a>
+                <a href="/privacy.html#offer" className="hover:text-white">Договор публичной оферты</a>
+                <a href="https://t.me/ugol_donbassa" className="hover:text-white text-sky-400">Telegram</a>
+                <a href="tel:+79889946896" className="hover:text-white text-orange-400">МТС: +7 (988) 994-68-96</a>
+              </div>
             </div>
 
           </div>

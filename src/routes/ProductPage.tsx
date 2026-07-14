@@ -81,8 +81,8 @@ export default function ProductPage() {
   // Keeping sitemap, canonical and og:url identical to the 200 URL avoids a
   // self-redirecting canonical loop that caused Yandex to drop all pages.
   const pageUrl = `${SITE_ORIGIN}/${slug}/`;
-  const title = `${primary.name} в Донецке — купить со склада | ГориЯсно`;
-  const metaDescription = `${primary.description.slice(0, 140)}… Доставка по ДНР. Тел: +7 (949) 340-10-11.`;
+  const title = primary.seo?.title ?? `${primary.name} в Донецке — купить со склада | ГориЯсно`;
+  const metaDescription = primary.seo?.description ?? `${primary.description.slice(0, 140)}… Доставка по ДНР. Тел: +7 (949) 340-10-11.`;
 
   const accentText =
     theme === "cool-slate" ? "text-sky-400" : theme === "cozy-wood" ? "text-amber-500" : "text-orange-500";
@@ -104,6 +104,10 @@ export default function ProductPage() {
         <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content={`${SITE_ORIGIN}${primary.image}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={`${SITE_ORIGIN}${primary.image}`} />
         {skus.map(sku => (
           <script key={sku.id} type="application/ld+json">
             {JSON.stringify(buildProductJsonLd(sku))}

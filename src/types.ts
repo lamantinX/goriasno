@@ -23,6 +23,10 @@ export interface Product {
   slug?: string; // URL-слаг товарной страницы, напр. "anthracite"
   longDescription?: string; // развёрнутый копирайт для товарной страницы
   faqs?: { q: string; a: string }[]; // FAQ-блок товарной страницы
+  seo?: {
+    title: string;
+    description: string;
+  };
 }
 
 export interface FeedbackSubmission {
