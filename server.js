@@ -126,6 +126,21 @@ ${escMessage ? `💬 <b>Сообщение:</b> ${escMessage}\n` : ''}
   }
 });
 
+// Canonicalize explicit index.html URLs before static files are served.
+// This prevents duplicate crawlable documents such as / and /index.html,
+// or /anthracite/ and /anthracite/index.html. Preserve the query string.
+app.use((req, res, next) => {
+  if ((req.method !== 'GET' && req.method !== 'HEAD') || !req.path.endsWith('/index.html')) {
+    return next();
+  }
+
+  const canonicalPath = req.path.slice(0, -'index.html'.length) || '/';
+  const queryIndex = req.originalUrl.indexOf('?');
+  const query = queryIndex === -1 ? '' : req.originalUrl.slice(queryIndex);
+
+  return res.redirect(301, `${canonicalPath}${query}`);
+});
+
 // Хэшированные ассеты Vite — неизменны, кешируем на 1 год.
 // Keep in sync with nginx.conf location ~* \.(?:...)$ expires 1y.
 app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets'), {
